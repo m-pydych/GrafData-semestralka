@@ -1,4 +1,4 @@
-brand,product_name,gpu_name,gpu_codename,shading_units,base_clock,boost_clock,mem_size,mem_type,mem_bus,bandwidth,tflops_fp32,tdp,launch_price,Release_year,Release_month,Release_day,max_clock_mhz,mem_size_kb,mem_bus_bits,bandwidth_mbs,is_system_dependent,fp32_gflops,tdp_watts
+brand,product_name,gpu_name,gpu_codename,shading_units,base_clock,boost_clock,mem_size,mem_type,mem_bus,bandwidth,tflops_fp32,tdp,launch_price,release_year,release_month,release_day,max_clock_mhz,mem_size_kb,mem_bus_bits,bandwidth_mbs,is_system_dependent,fp32_gflops,tdp_watts
 ATI,Color Emulation Card,CW16800-A,,,,,32 KB,DRAM,32 bit,20.00 MB/s,,unknown,,1986,Aug,4,,32,32,20.0,False,,
 ATI,Graphics Solution,CW16800-A,,,,,64 KB,DRAM,32 bit,20.00 MB/s,,unknown,,1986,Sep,22,,64,32,20.0,False,,
 ATI,EGA Wonder 800,16899-0 | CHIPS P82C435,,,,,256 KB,DRAM,32 bit,32.00 MB/s,,unknown,,1987,Nov,16,,256,32,32.0,False,,
@@ -10,7 +10,6 @@ ATI,VGA Wonder,18800-1,,,,,256 KB,DRAM,32 bit,40.00 MB/s,,unknown,,1990,Feb,5,,2
 ATI,VGA Wonder+,28800-5,,,,,512 KB,DRAM,32 bit,40.00 MB/s,,unknown,,1990,Nov,1,,512,32,40.0,False,,
 ATI,8514-Ultra,Mach8,,,,,1 MB,VRAM,32 bit,40.00 MB/s,,unknown,799,1992,,,,1024,32,40.0,False,,
 ATI,Graphics Ultra,Mach8,,,,,1 MB,VRAM,32 bit,40.00 MB/s,,unknown,899,1992,,,,1024,32,40.0,False,,
-ATI,Graphics Ultra Pro ISA,Mach32,,,,,2 MB,DRAM,64 bit,80.00 MB/s,,unknown,799,1992,,,,2048,64,80.0,False,,
 ATI,Graphics Ultra Pro ISA,Mach32,,,,,2 MB,DRAM,64 bit,80.00 MB/s,,unknown,799,1992,,,,2048,64,80.0,False,,
 ATI,Graphics Vantage,Mach8,,,,,1 MB,DRAM,32 bit,40.00 MB/s,,unknown,599,1992,,,,1024,32,40.0,False,,
 ATI,Graphics Wonder PCI,Mach32,,,,,1 MB,DRAM,64 bit,80.00 MB/s,,unknown,199,1992,,,,1024,64,80.0,False,,
@@ -66,10 +65,10 @@ Intel,i740 8 MB,Auburn,,,,,8 MB,SDR,64 bit,800.0 MB/s,,unknown,,1998,Feb,12,,819
 Intel,i740 Graphics,Auburn,,,,,System Shared,System Shared,System Shared,System Dependent,,unknown,,,,,,,,,True,,
 Intel,i752 Graphics,Portola,,,,,System Shared,System Shared,System Shared,System Dependent,,unknown,,,,,,,,,True,,
 Matrox,Marvel G200,Eclipse,,,,,8 MB,SDR,64 bit,896.0 MB/s,,unknown,,1998,,,,8192,64,896.0,False,,
-Matrox,Millennium G200,Eclipse,,,,,8 MB,SGR,64 bit,1.144 GB/s,,unknown,,1998,,,,8192,64,1171.456,False,,
+Matrox,Millennium G200,Eclipse,,,,,8 MB,SGRAM,64 bit,1.144 GB/s,,unknown,,1998,,,,8192,64,1171.456,False,,
 Matrox,Millennium G200 SD,Eclipse,,,,,8 MB,SDR,64 bit,896.0 MB/s,,unknown,,1998,,,,8192,64,896.0,False,,
 Matrox,Mystique G200,Eclipse,,,,,8 MB,SDR,64 bit,896.0 MB/s,,unknown,,1998,,,,8192,64,896.0,False,,
-Matrox,Productiva G100,Twister,,,,,2 MB,SGR,64 bit,496.0 MB/s,,unknown,,1998,,,,2048,64,496.0,False,,
+Matrox,Productiva G100,Twister,,,,,2 MB,SGRAM,64 bit,496.0 MB/s,,unknown,,1998,,,,2048,64,496.0,False,,
 NVIDIA,Riva 128ZX,NV3,,,,,8 MB,SDR,128 bit,1.600 GB/s,,unknown,,1998,Feb,23,,8192,128,1638.4,False,,
 NVIDIA,Riva TNT,NV4,,,,,16 MB,SDR,128 bit,1.760 GB/s,,unknown,,1998,Mar,23,,16384,128,1802.24,False,,
 3dfx,Velocity 100,Avenger,,,,,8 MB,SDR,128 bit,2.288 GB/s,,15 W,,1999,Jul,26,,8192,128,2342.912,False,,15
@@ -680,7 +679,6 @@ AMD,Radeon Pro WX 5100,Ellesmere,,1792,713.0,1086.0,8 GB,GDDR5,256 bit,160.0 GB/
 AMD,Radeon Pro WX 7100,Ellesmere,,2304,1188.0,1243.0,8 GB,GDDR5,256 bit,224.0 GB/s,5.728 TFLOPS,130 W,799,2016,Nov,10,1243.0,8388608,256,229376.0,False,5728.0,130
 AMD,Radeon R1E Mobile Graphics,Stoney,,64,300.0,600.0,System Shared,System Shared,System Shared,System Dependent,76.80 GFLOPS,15 W,,,,,600.0,,,,True,76.8,15
 AMD,Radeon R1E Mobile Graphics,Beema,,64,,,System Shared,System Shared,System Shared,System Dependent,63.62 GFLOPS,15 W,,,,,,,,,True,63.62,15
-AMD,Radeon R1E Mobile Graphics,Beema,,64,,,System Shared,System Shared,System Shared,System Dependent,63.62 GFLOPS,15 W,,,,,,,,,True,63.62,15
 AMD,Radeon R2 Mobile Graphics,Stoney,,128,200.0,600.0,System Shared,System Shared,System Shared,System Dependent,153.6 GFLOPS,15 W,,,,,600.0,,,,True,153.6,15
 AMD,Radeon R2E Mobile Graphics,Stoney,,128,200.0,600.0,System Shared,System Shared,System Shared,System Dependent,153.6 GFLOPS,15 W,,,,,600.0,,,,True,153.6,15
 AMD,Radeon R3 Mobile Graphics,Stoney,,128,200.0,655.0,System Shared,System Shared,System Shared,System Dependent,167.7 GFLOPS,15 W,,,,,655.0,,,,True,167.7,15
@@ -822,8 +820,6 @@ AMD,Radeon RX Vega M GH,Polaris 22,,1536,1063.0,1190.0,4 GB,HBM2,1024 bit,204.8 
 AMD,Radeon RX Vega M GL,Polaris 22,,1280,931.0,1011.0,4 GB,HBM2,1024 bit,179.2 GB/s,2.588 TFLOPS,65 W,,,,,1011.0,4194304,1024,183500.8,False,2588.0,65
 AMD,Radeon Vega 11 Embedded,Raven,,704,300.0,1301.0,System Shared,System Shared,System Shared,System Dependent,1.832 TFLOPS,25 W,,,,,1301.0,,,,True,1832.0,25
 AMD,Radeon Vega 3 Embedded,Raven,,192,300.0,1001.0,System Shared,System Shared,System Shared,System Dependent,384.4 GFLOPS,15 W,,,,,1001.0,,,,True,384.4,15
-AMD,Radeon Vega 3 Embedded,Raven,,192,300.0,1001.0,System Shared,System Shared,System Shared,System Dependent,384.4 GFLOPS,15 W,,,,,1001.0,,,,True,384.4,15
-AMD,Radeon Vega 3 Embedded,Raven,,192,300.0,1001.0,System Shared,System Shared,System Shared,System Dependent,384.4 GFLOPS,15 W,,,,,1001.0,,,,True,384.4,15
 AMD,Radeon Vega 3 Mobile,Raven-M,,192,300.0,1101.0,System Shared,System Shared,System Shared,System Dependent,422.8 GFLOPS,15 W,,,,,1101.0,,,,True,422.8,15
 AMD,Radeon Vega 6 Embedded,Raven,,384,300.0,1280.0,System Shared,System Shared,System Shared,System Dependent,983.0 GFLOPS,15 W,,,,,1280.0,,,,True,983.0,15
 AMD,Radeon Vega 6 Mobile,Raven-M,,384,300.0,1101.0,System Shared,System Shared,System Shared,System Dependent,845.6 GFLOPS,15 W,,,,,1101.0,,,,True,845.6,15
@@ -872,17 +868,13 @@ AMD,Radeon RX Vega 11,Picasso,,704,300.0,1400.0,System Shared,System Shared,Syst
 AMD,Radeon RX Vega 11 Mobile,Picasso-M,,704,300.0,1400.0,System Shared,System Shared,System Shared,System Dependent,1.971 TFLOPS,15 W,,,,,1400.0,,,,True,1971.0,15
 AMD,Radeon Vega 10 Mobile,Picasso-M,,640,300.0,1400.0,System Shared,System Shared,System Shared,System Dependent,1.792 TFLOPS,15 W,,,,,1400.0,,,,True,1792.0,15
 AMD,Radeon Vega 10 Mobile,Raven-M,,640,300.0,1301.0,System Shared,System Shared,System Shared,System Dependent,1.665 TFLOPS,10 W,,,,,1301.0,,,,True,1665.0,10
-AMD,Radeon Vega 10 Mobile,Picasso-M,,640,300.0,1400.0,System Shared,System Shared,System Shared,System Dependent,1.792 TFLOPS,15 W,,,,,1400.0,,,,True,1792.0,15
 AMD,Radeon Vega 11,Picasso,,704,300.0,1400.0,System Shared,System Shared,System Shared,System Dependent,1.971 TFLOPS,15 W,,,,,1400.0,,,,True,1971.0,15
 AMD,Radeon Vega 3,Picasso,,192,300.0,1100.0,System Shared,System Shared,System Shared,System Dependent,422.4 GFLOPS,15 W,,,,,1100.0,,,,True,422.4,15
 AMD,Radeon Vega 3 Embedded,Picasso-M,,192,300.0,1000.0,System Shared,System Shared,System Shared,System Dependent,384.0 GFLOPS,10 W,,,,,1000.0,,,,True,384.0,10
 AMD,Radeon Vega 3 Embedded,Picasso-M,,192,300.0,1200.0,System Shared,System Shared,System Shared,System Dependent,460.8 GFLOPS,10 W,,,,,1200.0,,,,True,460.8,10
 AMD,Radeon Vega 3 Mobile,Picasso-M,,192,300.0,1001.0,System Shared,System Shared,System Shared,System Dependent,384.4 GFLOPS,15 W,,,,,1001.0,,,,True,384.4,15
-AMD,Radeon Vega 6 Mobile,Raven-M,,384,300.0,1101.0,System Shared,System Shared,System Shared,System Dependent,845.6 GFLOPS,15 W,,,,,1101.0,,,,True,845.6,15
 AMD,Radeon Vega 6 Mobile,Picasso-M,,384,300.0,1200.0,System Shared,System Shared,System Shared,System Dependent,921.6 GFLOPS,15 W,,,,,1200.0,,,,True,921.6,15
 AMD,Radeon Vega 8,Picasso,,512,300.0,1250.0,System Shared,System Shared,System Shared,System Dependent,"1,280.0 GFLOPS",15 W,,,,,1250.0,,,,True,1280.0,15
-AMD,Radeon Vega 8 Mobile,Raven-M,,512,300.0,1101.0,System Shared,System Shared,System Shared,System Dependent,"1,127.4 GFLOPS",25 W,,,,,1101.0,,,,True,1127.4,25
-AMD,Radeon Vega 8 Mobile,Picasso-M,,512,300.0,1200.0,System Shared,System Shared,System Shared,System Dependent,"1,228.8 GFLOPS",15 W,,,,,1200.0,,,,True,1228.8,15
 AMD,Radeon Vega 8 Mobile,Picasso-M,,512,300.0,1200.0,System Shared,System Shared,System Shared,System Dependent,"1,228.8 GFLOPS",15 W,,,,,1200.0,,,,True,1228.8,15
 AMD,Radeon Vega 9 Mobile,Picasso-M,,576,300.0,1300.0,System Shared,System Shared,System Shared,System Dependent,"1,497.6 GFLOPS",15 W,,,,,1300.0,,,,True,1497.6,15
 AMD,Radeon VII,Vega 20,,3840,1400.0,1750.0,16 GB,HBM2,4096 bit,1.02 TB/s,13.44 TFLOPS,295 W,699,2019,Feb,7,1750.0,16777216,4096,1069547.52,False,13440.0,295
@@ -1010,7 +1002,6 @@ AMD,Ryzen Z1 GPU,Phoenix,,256,1500.0,2500.0,16 GB,LPDDR5,64 bit,51.20 GB/s,2.560
 AMD,Steam Deck OLED GPU,Sephiroth,,512,1000.0,1600.0,16 GB,LPDDR5,128 bit,176.0 GB/s,1.638 TFLOPS,15 W,,2023,Nov,9,1600.0,16777216,128,180224.0,False,1638.0,15
 AMD,Playstation 5 Pro GPU,Viola,,3840,2170.0,2350.0,16 GB,GDDR6,256 bit,576.0 GB/s,18.05 TFLOPS,232 W,699,2024,Nov,7,2350.0,16777216,256,589824.0,False,18050.0,232
 AMD,Radeon 740M,Phoenix2,,256,800.0,2800.0,System Shared,System Shared,System Shared,System Dependent,2.867 TFLOPS,45 W,,,,,2800.0,,,,True,2867.0,45
-AMD,Radeon 760M,Phoenix,,512,800.0,2599.0,System Shared,System Shared,System Shared,System Dependent,5.323 TFLOPS,15 W,,,,,2599.0,,,,True,5323.0,15
 AMD,Radeon 780M,Phoenix,,768,800.0,2900.0,System Shared,System Shared,System Shared,System Dependent,8.909 TFLOPS,15 W,,,,,2900.0,,,,True,8909.0,15
 AMD,Radeon 880M,Strix Point,,768,400.0,2900.0,System Shared,System Shared,System Shared,System Dependent,4.454 TFLOPS,15 W,,,,,2900.0,,,,True,4454.0,15
 AMD,Radeon 890M,Strix Point,,1024,400.0,2900.0,System Shared,System Shared,System Shared,System Dependent,5.939 TFLOPS,15 W,,,,,2900.0,,,,True,5939.0,15
@@ -1053,7 +1044,6 @@ ATI,FireGL 9600 T2-64S,RV350,,,,,64 MB,DDR,128 bit,6.496 GB/s,,unknown,,2003,Oct
 ATI,FireGL 9800 X2-256,R360,,,,,256 MB,DDR2,256 bit,22.40 GB/s,,unknown,,2003,Mar,1,,262144,256,22937.6,False,,
 ATI,FireGL 9800 X2-256T,R360,,,,,256 MB,DDR2,256 bit,22.02 GB/s,,unknown,,2003,Oct,1,,262144,256,22548.48,False,,
 ATI,Mobility FireGL T2,M10,,,,,128 MB,DDR,128 bit,6.400 GB/s,,,,,,,,131072,128,6553.6,False,,
-ATI,Mobility Radeon,M6,,,,,16 MB,DDR,64 bit,2.304 GB/s,,unknown,,,,,,16384,64,2359.296,False,,
 ATI,Mobility Radeon,M6,,,,,16 MB,DDR,64 bit,2.304 GB/s,,unknown,,,,,,16384,64,2359.296,False,,
 ATI,Mobility Radeon 7000 IGP,RS250,,,,,System Shared,System Shared,System Shared,System Dependent,,unknown,,,,,,,,,True,,
 ATI,Mobility Radeon 9000 IGP,RS350,,,,,System Shared,System Shared,System Shared,System Dependent,,unknown,,,,,,,,,True,,
@@ -1326,13 +1316,11 @@ ATI,Radeon X800 GTO AGP,R420,,,,,256 MB,GDDR3,256 bit,31.36 GB/s,,49 W,,2007,Nov
 ATI,Radeon Xpress 1100 IGP,RC410,,,,,System Shared,System Shared,System Shared,System Dependent,,unknown,,,,,,,,,True,,
 ATI,Radeon Xpress 1150 IGP,RS482,,,,,System Shared,System Shared,System Shared,System Dependent,,unknown,,,,,,,,,True,,
 ATI,Radeon Xpress 1200 IGP,RS690,,,,,System Shared,System Shared,System Shared,System Dependent,,unknown,,,,,,,,,True,,
-ATI,Radeon Xpress 1200 IGP,RS690,,,,,System Shared,System Shared,System Shared,System Dependent,,unknown,,,,,,,,,True,,
 ATI,Radeon Xpress 1200 Mobile IGP,RS600,,,,,System Shared,System Shared,System Shared,System Dependent,,unknown,,,,,,,,,True,,
 ATI,Radeon Xpress 1200 Mobile IGP,RS690,,,,,System Shared,System Shared,System Shared,System Dependent,,unknown,,,,,,,,,True,,
 ATI,Radeon Xpress 1250 IGP,RS690,,,,,System Shared,System Shared,System Shared,System Dependent,,unknown,,,,,,,,,True,,
 ATI,Radeon Xpress 1250 Mobile IGP,RS600,,,,,System Shared,System Shared,System Shared,System Dependent,,unknown,,,,,,,,,True,,
 ATI,Radeon Xpress 1250 Mobile IGP,RS690,,,,,System Shared,System Shared,System Shared,System Dependent,,unknown,,,,,,,,,True,,
-ATI,Radeon Xpress 1270 Mobile IGP,RS690,,,,,System Shared,System Shared,System Shared,System Dependent,,unknown,,,,,,,,,True,,
 ATI,Radeon Xpress 1270 Mobile IGP,RS690,,,,,System Shared,System Shared,System Shared,System Dependent,,unknown,,,,,,,,,True,,
 ATI,Xbox 360 GPU 80nm,Xenos Falcon,,240,,,512 MB,GDDR3,128 bit,22.40 GB/s,240.0 GFLOPS,175 W,479,2007,Oct,27,,524288,128,22937.6,False,240.0,175
 ATI,All-In-Wonder HD 3650,RV635 | Theater 650 PRO,,120,,,512 MB,DDR2,128 bit,19.20 GB/s,174.0 GFLOPS,55 W,199,2008,Jun,28,,524288,128,19660.8,False,174.0,55
@@ -1421,7 +1409,6 @@ ATI,Mobility Radeon HD 4860,M97,,640,,,1024 MB,GDDR5,128 bit,64.00 GB/s,832.0 GF
 ATI,Mobility Radeon HD 4870,M98,,800,,,512 MB,GDDR3,256 bit,56.83 GB/s,880.0 GFLOPS,unknown,,,,,,524288,256,58193.92,False,880.0,
 ATI,Mobility Radeon HD 4870 X2,M98,,800,,,1024 MB,GDDR5,256 bit,89.60 GB/s,880.0 GFLOPS,unknown,,,,,,1048576,256,91750.4,False,880.0,
 ATI,Radeon 3000 IGP,RS780,,40,,,System Shared,System Shared,System Shared,System Dependent,28.00 GFLOPS,unknown,,,,,,,,,True,28.0,
-ATI,Radeon E4690 MXM,M96,,320,,,512 MB,GDDR3,128 bit,22.40 GB/s,384.0 GFLOPS,30 W,,,,,,524288,128,22937.6,False,384.0,30
 ATI,Radeon E4690 MXM,M96,,320,,,512 MB,GDDR3,128 bit,22.40 GB/s,384.0 GFLOPS,30 W,,,,,,524288,128,22937.6,False,384.0,30
 ATI,Radeon E4690 PCIe,M96,,320,,,512 MB,GDDR3,128 bit,22.40 GB/s,384.0 GFLOPS,30 W,,,,,,524288,128,22937.6,False,384.0,30
 ATI,Radeon HD 3200 Mobile IGP,RS780,,40,,,System Shared,System Shared,System Shared,System Dependent,30.40 GFLOPS,unknown,,,,,,,,,True,30.4,
@@ -1528,7 +1515,6 @@ ATI,FireGL 9700 X1-256p,R300,,,,,256 MB,DDR,256 bit,17.66 GB/s,,37 W,,2002,Jul,2
 ATI,Mobility FireGL 9000,M9,,,,,64 MB,DDR,128 bit,6.400 GB/s,,,,,,,,65536,128,6553.6,False,,
 ATI,Mobility Radeon 9000,M9,,,,,64 MB,DDR,64 bit,3.200 GB/s,,,,,,,,65536,64,3276.8,False,,
 ATI,Mobility Radeon 9000,M9,,,,,32 MB,DDR,64 bit,3.200 GB/s,,,,,,,,32768,64,3276.8,False,,
-ATI,Mobility Radeon 9000,M9,,,,,64 MB,DDR,64 bit,3.200 GB/s,,,,,,,,65536,64,3276.8,False,,
 ATI,Mobility Radeon-P,M6,,,,,32 MB,DDR,64 bit,2.656 GB/s,,unknown,,,,,,32768,64,2719.744,False,,
 ATI,Radeon 7500 Mac Edition,RV200,,,,,32 MB,DDR,128 bit,5.760 GB/s,,23 W,,2002,Apr,16,,32768,128,5898.24,False,,23
 ATI,Radeon 8500 LE,R200,,,,,64 MB,DDR,128 bit,8.000 GB/s,,23 W,,2002,Feb,4,,65536,128,8192.0,False,,23
@@ -1566,15 +1552,9 @@ Intel,GMA 950,Lakeport,,,,,System Shared,System Shared,System Shared,System Depe
 Intel,GMA 950,Lakeport,,,250.0,400.0,System Shared,System Shared,System Shared,System Dependent,,7 W,,,,,400.0,,,,True,,7
 Intel,GMA 3000,Broadwater,,,,,System Shared,System Shared,System Shared,System Dependent,,13 W,,,,,,,,,True,,13
 Intel,GMA 3000,Lakeport,,,,,System Shared,System Shared,System Shared,System Dependent,,13 W,,,,,,,,,True,,13
-Intel,GMA 3000,Broadwater,,,,,System Shared,System Shared,System Shared,System Dependent,,13 W,,,,,,,,,True,,13
-Intel,GMA 3000,Broadwater,,,,,System Shared,System Shared,System Shared,System Dependent,,13 W,,,,,,,,,True,,13
 Intel,GMA 950,Calistoga,,,,,System Shared,System Shared,System Shared,System Dependent,,7 W,,,,,,,,,True,,7
 Intel,GMA X3000,Broadwater,,,,,System Shared,System Shared,System Shared,System Dependent,,13 W,,,,,,,,,True,,13
-Intel,GMA X3000,Broadwater,,,,,System Shared,System Shared,System Shared,System Dependent,,13 W,,,,,,,,,True,,13
 Intel,GMA 3100,Bearlake,,,,,System Shared,System Shared,System Shared,System Dependent,,13 W,,,,,,,,,True,,13
-Intel,GMA 3100,Bearlake,,,,,System Shared,System Shared,System Shared,System Dependent,,13 W,,,,,,,,,True,,13
-Intel,GMA 3100,Bearlake,,,,,System Shared,System Shared,System Shared,System Dependent,,13 W,,,,,,,,,True,,13
-Intel,GMA 3150,Pineview,,16,,,System Shared,System Shared,System Shared,System Dependent,12.80 GFLOPS,13 W,,,,,,,,,True,12.8,13
 Intel,GMA 3150,Pineview,,16,,,System Shared,System Shared,System Shared,System Dependent,12.80 GFLOPS,13 W,,,,,,,,,True,12.8,13
 Intel,GMA X3100,Crestline,,,,,System Shared,System Shared,System Shared,System Dependent,,13 W,,,,,,,,,True,,13
 Intel,GMA X3100,Broadwater,,,,,System Shared,System Shared,System Shared,System Dependent,,13 W,,,,,,,,,True,,13
@@ -1799,11 +1779,9 @@ NVIDIA,GeForce4 MX 440-8x,NV18,,,,,64 MB,DDR,128 bit,8.000 GB/s,,unknown,,2002,S
 NVIDIA,GeForce4 MX 440-8x,NV18,,,,,32 MB,DDR,32 bit,2.000 GB/s,,unknown,,2002,Sep,25,,32768,32,2048.0,False,,
 NVIDIA,GeForce4 MX 440-SE,NV18,,,,,64 MB,DDR,64 bit,3.200 GB/s,,unknown,,2002,Feb,6,,65536,64,3276.8,False,,
 NVIDIA,GeForce4 MX 440-SE,NV17,,,,,64 MB,DDR,128 bit,5.312 GB/s,,unknown,,2002,Feb,6,,65536,128,5439.488,False,,
-NVIDIA,GeForce4 MX 440-SE,NV17,,,,,64 MB,DDR,128 bit,5.312 GB/s,,unknown,,2002,Feb,6,,65536,128,5439.488,False,,
 NVIDIA,GeForce4 MX 460,NV17,,,,,64 MB,DDR,128 bit,7.200 GB/s,,unknown,,2002,Feb,6,,65536,128,7372.8,False,,
 NVIDIA,GeForce4 Ti 4200,NV25,,,,,64 MB,DDR,128 bit,8.000 GB/s,,unknown,,2002,Feb,6,,65536,128,8192.0,False,,
 NVIDIA,GeForce4 Ti 4200,NV25,,,,,64 MB,DDR,64 bit,4.000 GB/s,,unknown,,2002,Feb,6,,65536,64,4096.0,False,,
-NVIDIA,GeForce4 Ti 4200-8X,NV28,,,,,64 MB,SDR,128 bit,4.000 GB/s,,unknown,,2002,Feb,6,,65536,128,4096.0,False,,
 NVIDIA,GeForce4 Ti 4200-8X,NV28,,,,,64 MB,SDR,128 bit,4.000 GB/s,,unknown,,2002,Feb,6,,65536,128,4096.0,False,,
 NVIDIA,GeForce4 Ti 4400,NV25,,,,,128 MB,DDR,128 bit,8.800 GB/s,,unknown,,2002,Feb,6,,131072,128,9011.2,False,,
 NVIDIA,GeForce4 Ti 4600,NV25,,,,,128 MB,DDR,128 bit,10.37 GB/s,,unknown,399,2002,Feb,6,,131072,128,10618.88,False,,
@@ -1855,7 +1833,6 @@ NVIDIA,GeForce PCX 5900,NV35,,,,,128 MB,DDR,256 bit,17.60 GB/s,,unknown,,2003,Ma
 NVIDIA,GeForce4 MX 4000,NV18,,,,,128 MB,DDR,64 bit,2.656 GB/s,,unknown,,2003,Dec,14,,131072,64,2719.744,False,,
 NVIDIA,GeForce4 MX 4000 PCI,NV18C,,,,,128 MB,DDR,64 bit,2.656 GB/s,,unknown,,2003,Dec,14,,131072,64,2719.744,False,,
 NVIDIA,GeForce4 MX 4000 Rev. 2,NV18C,,,,,128 MB,DDR,64 bit,2.656 GB/s,,unknown,,2003,Dec,14,,131072,64,2719.744,False,,
-NVIDIA,GeForce4 Ti 4800,NV28,,,,,128 MB,DDR,128 bit,10.40 GB/s,,unknown,,2003,Mar,15,,131072,128,10649.6,False,,
 NVIDIA,GeForce4 Ti 4800,NV28,,,,,128 MB,DDR,128 bit,10.40 GB/s,,unknown,,2003,Mar,15,,131072,128,10649.6,False,,
 NVIDIA,GeForce4 Ti 4800 SE,NV28,,,,,128 MB,DDR,128 bit,8.800 GB/s,,unknown,,2003,Feb,16,,131072,128,9011.2,False,,
 NVIDIA,Quadro FX 1000,NV30,,,,,128 MB,DDR2,128 bit,9.600 GB/s,,unknown,,2003,Jan,21,,131072,128,9830.4,False,,
@@ -2126,7 +2103,6 @@ NVIDIA,GeForce 9300 SE,G98S,,8,,,256 MB,DDR2,64 bit,6.400 GB/s,20.80 GFLOPS,unkn
 NVIDIA,GeForce 9300M G,G86S,,16,,,256 MB,DDR2,64 bit,6.400 GB/s,25.60 GFLOPS,13 W,,,,,,262144,64,6553.6,False,25.6,13
 NVIDIA,GeForce 9300M GS,G98S,,8,,,256 MB,DDR2,64 bit,6.400 GB/s,23.20 GFLOPS,13 W,,,,,,262144,64,6553.6,False,23.2,13
 NVIDIA,GeForce 9300M GS GDDR3,G98,,8,,,256 MB,GDDR3,64 bit,11.23 GB/s,23.20 GFLOPS,13 W,,,,,,262144,64,11499.52,False,23.2,13
-NVIDIA,GeForce 9400,C79,,16,,,System Shared,System Shared,System Shared,System Dependent,35.20 GFLOPS,40 W,,,,,,,,,True,35.2,40
 NVIDIA,GeForce 9400,C79,,16,,,System Shared,System Shared,System Shared,System Dependent,35.20 GFLOPS,40 W,,,,,,,,,True,35.2,40
 NVIDIA,GeForce 9400,C7A,,16,,,System Shared,System Shared,System Shared,System Dependent,44.80 GFLOPS,40 W,,,,,,,,,True,44.8,40
 NVIDIA,GeForce 9400 GT,G86S,,16,,,128 MB,DDR2,64 bit,9.600 GB/s,29.38 GFLOPS,50 W,,2008,Aug,1,,131072,64,9830.4,False,29.38,50
@@ -2454,7 +2430,6 @@ NVIDIA,GeForce GT 630M,GF117,,96,,,1024 MB,GDDR5,128 bit,64.00 GB/s,240.0 GFLOPS
 NVIDIA,GeForce GT 630M,GF108,,96,,,1024 MB,DDR3,64 bit,14.40 GB/s,182.4 GFLOPS,33 W,,,,,,1048576,64,14745.6,False,182.4,33
 NVIDIA,GeForce GT 630M,GF108,,96,,,1024 MB,DDR3,64 bit,14.40 GB/s,253.4 GFLOPS,33 W,,,,,,1048576,64,14745.6,False,253.4,33
 NVIDIA,GeForce GT 635M,GF116S,,144,,,2 GB,DDR3,128 bit,28.80 GB/s,388.8 GFLOPS,35 W,,,,,,2097152,128,29491.2,False,388.8,35
-NVIDIA,GeForce GT 635M,GF116S,,144,,,2 GB,DDR3,128 bit,28.80 GB/s,388.8 GFLOPS,35 W,,,,,,2097152,128,29491.2,False,388.8,35
 NVIDIA,GeForce GT 635M,GF108,,96,,,2 GB,DDR3,128 bit,28.80 GB/s,182.4 GFLOPS,35 W,,,,,,2097152,128,29491.2,False,182.4,35
 NVIDIA,GeForce GT 635M,GF108,,96,,,2 GB,DDR3,128 bit,28.80 GB/s,253.4 GFLOPS,33 W,,,,,,2097152,128,29491.2,False,253.4,33
 NVIDIA,GeForce GT 640,GK107,,384,,,2 GB,DDR3,128 bit,28.51 GB/s,692.7 GFLOPS,65 W,99,2012,Jun,5,,2097152,128,29194.24,False,692.7,65
@@ -2602,7 +2577,6 @@ NVIDIA,GeForce 705A,GF119S,,48,,,1024 MB,DDR3,64 bit,14.40 GB/s,91.20 GFLOPS,15 
 NVIDIA,GeForce 710A,GK208,,192,719.0,758.0,1024 MB,DDR3,64 bit,16.02 GB/s,291.1 GFLOPS,15 W,,,,,758.0,1048576,64,16404.48,False,291.1,15
 NVIDIA,GeForce 720A,GF117,,96,,,1024 MB,DDR3,64 bit,16.02 GB/s,297.6 GFLOPS,33 W,,,,,,1048576,64,16404.48,False,297.6,33
 NVIDIA,GeForce 800A,GF119S,,48,,,1024 MB,DDR3,64 bit,14.40 GB/s,91.20 GFLOPS,15 W,,,,,,1048576,64,14745.6,False,91.2,15
-NVIDIA,GeForce 800A,GF119S,,48,,,1024 MB,DDR3,64 bit,14.40 GB/s,91.20 GFLOPS,15 W,,,,,,1048576,64,14745.6,False,91.2,15
 NVIDIA,GeForce 800M,GF117,,48,,,1024 MB,DDR3,64 bit,14.40 GB/s,141.7 GFLOPS,15 W,,,,,,1048576,64,14745.6,False,141.7,15
 NVIDIA,GeForce 805A,GK208,,192,719.0,758.0,1024 MB,DDR3,64 bit,16.02 GB/s,291.1 GFLOPS,15 W,,,,,758.0,1048576,64,16404.48,False,291.1,15
 NVIDIA,GeForce 810A,GK208,,192,719.0,758.0,1024 MB,DDR3,64 bit,14.40 GB/s,291.1 GFLOPS,15 W,,,,,758.0,1048576,64,14745.6,False,291.1,15
@@ -2641,7 +2615,6 @@ NVIDIA,GeForce GTX 970,GM204,,1664,1050.0,1178.0,4 GB,GDDR5,256 bit,224.4 GB/s,3
 NVIDIA,GeForce GTX 970M,GM204,,1280,924.0,1038.0,3 GB,GDDR5,192 bit,120.3 GB/s,2.657 TFLOPS,unknown,,,,,1038.0,3145728,192,123187.2,False,2657.0,
 NVIDIA,GeForce GTX 970M,GM204,,1280,924.0,1038.0,6 GB,GDDR5,192 bit,120.3 GB/s,2.657 TFLOPS,unknown,,,,,1038.0,6291456,192,123187.2,False,2657.0,
 NVIDIA,GeForce GTX 980,GM204,,2048,1127.0,1216.0,4 GB,GDDR5,256 bit,224.4 GB/s,4.981 TFLOPS,165 W,549,2014,Sep,19,1216.0,4194304,256,229785.6,False,4981.0,165
-NVIDIA,GeForce GTX 980M,GM204,,1536,1038.0,1127.0,8 GB,GDDR5,256 bit,160.4 GB/s,3.462 TFLOPS,unknown,,,,,1127.0,8388608,256,164249.6,False,3462.0,
 NVIDIA,GeForce GTX 980M,GM204,,1536,1038.0,1127.0,8 GB,GDDR5,256 bit,160.4 GB/s,3.462 TFLOPS,unknown,,,,,1127.0,8388608,256,164249.6,False,3462.0,
 NVIDIA,GeForce GTX TITAN BLACK,GK110B,,2880,889.0,980.0,6 GB,GDDR5,384 bit,336.0 GB/s,5.645 TFLOPS,250 W,999,2014,Feb,18,980.0,6291456,384,344064.0,False,5645.0,250
 NVIDIA,GeForce GTX TITAN Z,GK110B,,2880,705.0,876.0,6 GB,GDDR5,384 bit,336.0 GB/s,5.046 TFLOPS,375 W,2999,2014,May,28,876.0,6291456,384,344064.0,False,5046.0,375
@@ -2693,7 +2666,6 @@ NVIDIA,GeForce GTX 960 OEM,GM206,,1024,1176.0,1201.0,4 GB,GDDR5,128 bit,112.2 GB
 NVIDIA,GeForce GTX 960 OEM,GM204,,1280,924.0,1038.0,3 GB,GDDR5,192 bit,120.3 GB/s,2.657 TFLOPS,unknown,,2015,Nov,26,1038.0,3145728,192,123187.2,False,2657.0,
 NVIDIA,GeForce GTX 960A,GM107,,640,1097.0,1176.0,2 GB,GDDR5,128 bit,80.19 GB/s,1.505 TFLOPS,75 W,,,,,1176.0,2097152,128,82114.56,False,1505.0,75
 NVIDIA,GeForce GTX 960M,GM107,,640,1097.0,1176.0,4 GB,GDDR5,128 bit,80.19 GB/s,1.505 TFLOPS,75 W,,,,,1176.0,4194304,128,82114.56,False,1505.0,75
-NVIDIA,GeForce GTX 965M,GM204,,1024,924.0,950.0,2 GB,GDDR5,128 bit,80.19 GB/s,1.946 TFLOPS,unknown,,,,,950.0,2097152,128,82114.56,False,1946.0,
 NVIDIA,GeForce GTX 965M,GM204,,1024,924.0,950.0,2 GB,GDDR5,128 bit,80.19 GB/s,1.946 TFLOPS,unknown,,,,,950.0,2097152,128,82114.56,False,1946.0,
 NVIDIA,GeForce GTX 965M 4 GB,GM204,,1024,935.0,1150.0,4 GB,GDDR5,128 bit,80.19 GB/s,2.355 TFLOPS,unknown,,,,,1150.0,4194304,128,82114.56,False,2355.0,
 NVIDIA,GeForce GTX 980 Mobile,GM204,,2048,1064.0,1140.0,8 GB,GDDR5,256 bit,224.4 GB/s,4.669 TFLOPS,unknown,,,,,1140.0,8388608,256,229785.6,False,4669.0,
@@ -2769,7 +2741,6 @@ NVIDIA,Tesla P40,GP102,,3840,1303.0,1531.0,24 GB,GDDR5,384 bit,347.1 GB/s,11.76 
 NVIDIA,TITAN X Pascal,GP102,,3584,1417.0,1531.0,12 GB,GDDR5X,384 bit,480.4 GB/s,10.97 TFLOPS,250 W,1199,2016,Aug,2,1531.0,12582912,384,491929.6,False,10970.0,250
 NVIDIA,GeForce GT 1030,GP108,,384,1228.0,1468.0,2 GB,GDDR5,64 bit,48.06 GB/s,"1,127.4 GFLOPS",30 W,79,2017,May,17,1468.0,2097152,64,49213.44,False,1127.4,30
 NVIDIA,GeForce GT 720 OEM,GK107,,192,,,1024 MB,DDR3,128 bit,28.51 GB/s,381.3 GFLOPS,50 W,,2017,Oct,29,,1048576,128,29194.24,False,381.3,50
-NVIDIA,GeForce GTX 1050 Mobile,GP107,,640,1354.0,1493.0,2 GB,GDDR5,128 bit,112.1 GB/s,1.911 TFLOPS,75 W,,,,,1493.0,2097152,128,114790.4,False,1911.0,75
 NVIDIA,GeForce GTX 1050 Mobile,GP107,,640,1354.0,1493.0,2 GB,GDDR5,128 bit,112.1 GB/s,1.911 TFLOPS,75 W,,,,,1493.0,2097152,128,114790.4,False,1911.0,75
 NVIDIA,GeForce GTX 1050 Ti Mobile,GP107,,768,1493.0,1620.0,4 GB,GDDR5,128 bit,112.1 GB/s,2.488 TFLOPS,75 W,,,,,1620.0,4194304,128,114790.4,False,2488.0,75
 NVIDIA,GeForce GTX 1050 Ti Mobile,GP106,,768,1493.0,1620.0,2 GB,GDDR5,128 bit,112.1 GB/s,2.488 TFLOPS,75 W,,,,,1620.0,2097152,128,114790.4,False,2488.0,75

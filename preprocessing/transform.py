@@ -39,13 +39,13 @@ def process_dates(df):
     date_col = 'release_date'
     
     # 1. Extraction of year number (4 digits starting with 19 or 20)
-    df['Release_year'] = df[date_col].str.extract(r'((?:19|20)\d{2})')
+    df['release_year'] = df[date_col].str.extract(r'((?:19|20)\d{2})')
 
     # 2. Extraction of month: We look for a word of at least 3 letters (Jan, Feb, October...)
-    df['Release_month'] = df[date_col].str.extract(r'([a-zA-Z]{3,})')
+    df['release_month'] = df[date_col].str.extract(r'([a-zA-Z]{3,})')
 
     # 3. Extraction of day: We look for 1 to 2 digits followed by st, nd, rd, or th
-    df['Release_day'] = df[date_col].str.extract(r'\b(\d{1,2})(?:st|nd|rd|th)\b')
+    df['release_day'] = df[date_col].str.extract(r'\b(\d{1,2})(?:st|nd|rd|th)\b')
 
     df = df.drop(columns=['release_date'])
     print("Release date processed.")
@@ -330,23 +330,31 @@ def process_price(df):
             
     return df
 
-def handle_duplicates(df):
-    # Search for duplicates based on all columns.
+def final_polish(df):
+    """Final cleanup: trimming whitespace unifying specific values, removing duplicates."""
+    df = df.copy()
 
-    # There were no duplicates in the original data,
-    # The duplicates were created by removing columns.
-    all_duplicates = df[df.duplicated(keep=False)]
-    
-    # Duplicate count
+
+    # 1. duplicate removal
+
+        # Search for duplicates based on all columns.
+        # There were no duplicates in the original data,
+        # The duplicates were created by removing columns.
+
     duplicate_count = df.duplicated().sum()
-    
-    if duplicate_count > 0:
-        print(f"--- duplicates found and removed: {duplicate_count} ---")
-        # print(all_duplicates.sort_values(by='product_name'))
-        
+    if duplicate_count > 0:     
         df = df.drop_duplicates()
-    else:
-        print("--- no duplicates found ---\n")
+
+    # 2. Strip whitespace from all string columns
+    str_cols = df.select_dtypes(include=['object']).columns
+    for col in str_cols:
+        df[col] = df[col].str.strip()
+    
+    # 3. Unify Memory Types (SGR -> SGRAM, its likely a typo, but not a big deal)
+    if 'mem_type' in df.columns:
+        df['mem_type'] = df['mem_type'].replace('SGR', 'SGRAM')
+        
+    print(f"Final polish done, duplicates: {duplicate_count}\n")
     return df
 
 
@@ -359,6 +367,7 @@ def main():
 
             """Process all columns."""
             df = rename_columns(df)
+
             # brand OK
             # product_name OK           
             df = process_dates(df)
@@ -374,13 +383,13 @@ def main():
             df = process_tdp(df)
             df = process_price(df)
 
-            handle_duplicates(df)
+            df = final_polish(df)
             
 
             df.to_csv(OUTPUT_PATH, index=False)
             print(f"Saved to: {OUTPUT_PATH}")
             print(df.head(15))
-            print("all done")
+            print("\nall done\n")
     except Exception as e:
         print(f"Chyba: {e}")
 
