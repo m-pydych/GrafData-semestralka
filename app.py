@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-st.title("GPU Semantic Comparatorer")
+st.title("GPU Semantic Comparatorerer")
 
 gpu_name = st.text_input("Jaká grafická karta vás zajímá?", "RTX 4090")
 
