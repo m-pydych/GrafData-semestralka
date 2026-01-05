@@ -387,6 +387,11 @@ def final_polish(df):
     # 4. Replace 'unknown' with empty strings in all string columns
     df = df.replace(to_replace=r'(?i)^unknown$', value='', regex=True)
 
+    # 5. remove collumns that are no longer needed
+    cols_to_remove = ['tflops_fp32', 'bandwidth']
+    df = df.drop(columns=[col for col in cols_to_remove if col in df.columns])
+
+
     print(f"Final polish done, duplicates: {duplicate_count}\n")
     return df
 
