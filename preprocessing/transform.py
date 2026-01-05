@@ -51,6 +51,35 @@ def process_dates(df):
     print("Release date processed.")
     return df
 
+def process_codename(df):
+    df['gpu_codename'] = df['gpu_codename'].replace('unknown', '')
+    return df
+
+def process_architecture(df):
+    """ Cleans architecture column."""
+    def clean_arch_logic(arch):
+        
+        arch = str(arch).strip()
+        if arch == 'nan' or arch == "" or arch.lower() == 'unknown':
+            return ''
+        
+        if '|' in arch:
+            arch = arch.split('|')[0].strip()
+        
+        # intel generation handling
+        if arch.startswith('Generation'):
+            return arch.replace('Generation', 'Intel Gen')
+        if arch.startswith('Xe'):
+            if not arch.startswith('Intel'):
+                return f"Intel {arch}"
+        
+        return arch
+
+    if 'architecture' in df.columns:
+        df['architecture'] = df['architecture'].apply(clean_arch_logic)
+
+    return df
+
 
 def process_shading_units(df):
     """Converts shading units to integers."""
@@ -269,13 +298,13 @@ def process_tdp(df):
     def clean_tdp(val):
         # Nulls or empty strings
         if pd.isna(val) or str(val).strip() == "":
-            return None
+            return pd.NA
         
         val_str = str(val).strip()
         
         # Unknowns
-        if "unknown" in val_str:
-            return None
+        if "unknown" in  val_str.lower().strip():
+            return pd.NA
             
         # Standard Watt values
         if "W" in val_str:
@@ -289,6 +318,7 @@ def process_tdp(df):
     try:
         df['tdp_watts'] = df[col].apply(clean_tdp)
         df['tdp_watts'] = df['tdp_watts'].astype('Int64')
+        df = df.drop(columns=[col])
         print("TDP values cleaned and converted to watts.")
     except ValueError as ve:
         print(ve)
@@ -353,7 +383,10 @@ def final_polish(df):
     # 3. Unify Memory Types (SGR -> SGRAM, its likely a typo, but not a big deal)
     if 'mem_type' in df.columns:
         df['mem_type'] = df['mem_type'].replace('SGR', 'SGRAM')
-        
+
+    # 4. Replace 'unknown' with empty strings in all string columns
+    df = df.replace(to_replace=r'(?i)^unknown$', value='', regex=True)
+
     print(f"Final polish done, duplicates: {duplicate_count}\n")
     return df
 
@@ -372,7 +405,8 @@ def main():
             # product_name OK           
             df = process_dates(df)
             # gpu_name OK
-            # gpu_codename OK
+            df = process_codename(df)
+            df = process_architecture(df)
             df = process_shading_units(df)
             df = process_clocks(df)
             df = process_memory_size(df)
@@ -384,12 +418,12 @@ def main():
             df = process_price(df)
 
             df = final_polish(df)
-            
 
             df.to_csv(OUTPUT_PATH, index=False)
             print(f"Saved to: {OUTPUT_PATH}")
             print(df.head(15))
             print("\nall done\n")
+
     except Exception as e:
         print(f"Chyba: {e}")
 
