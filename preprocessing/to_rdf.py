@@ -60,7 +60,22 @@ RDF_PROPERTIES = {
         "FP32 Performance (GFLOPS)",
         XSD.float,
         "Theoretical peak single-precision (FP32) floating-point performance of the GPU, measured in GFLOPS."
-    )
+    ),
+    EX.baseClockMHz: (
+        "Base Clock (MHz)",
+        XSD.integer,
+        "The base operating frequency of the GPU core under normal workload conditions."
+    ),
+    EX.boostClockMHz: (
+        "Boost Clock (MHz)",
+        XSD.integer,
+        "The maximum clock frequency the GPU can reach under boost conditions, depending on power and thermal limits."
+    ),
+    EX.maxClockMHz: (
+        "Max Clock (MHz)",
+        XSD.integer,
+        "The maximum achievable clock frequency of the GPU core as specified by the manufacturer."
+    ),
 }
 
 
@@ -143,8 +158,16 @@ def create_rdf():
             g.add((gpu_uri, EX.fp32GFlops, Literal(float(row['fp32_gflops']), datatype=XSD.float)))
 
         if pd.notna(row['launch_price']):
-            g.add((gpu_uri, SCHEMA.price, Literal(row['launch_price'], lang="en")))
+            g.add((gpu_uri, SCHEMA.price, Literal(int(row['launch_price']), datatype=XSD.integer)))
 
+        if pd.notna(row['base_clock']):
+            g.add((gpu_uri, EX.baseClockMHz, Literal(int(row['base_clock']), datatype=XSD.integer)))
+
+        if pd.notna(row['boost_clock']):
+            g.add(( gpu_uri, EX.boostClockMHz, Literal(int(row['boost_clock']), datatype=XSD.integer)))
+
+        if pd.notna(row['max_clock_mhz']):
+            g.add((gpu_uri, EX.maxClockMHz, Literal(int(row['max_clock_mhz']), datatype=XSD.integer)))
         
         # GPU -> manufacturer (Brand) predicate
         brand_uri = EX[row['brand_uri_id']]
