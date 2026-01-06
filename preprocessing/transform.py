@@ -443,7 +443,7 @@ def create_uri_slug(text):
     
     return s.strip("_")
 
-def make_product_uri(row, hash_len=8):
+def make_product_uri(row, hash_len=10):
         # Sloupce, které určují variantu
         variant_cols = [
         'brand', 'product_name', 'gpu_name', 'gpu_codename', 'architecture',
