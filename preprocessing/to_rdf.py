@@ -53,7 +53,7 @@ def create_rdf():
 
 
 
-    # GPU Product
+    # GPU Product 
     for _, row in df.iterrows():
         
         gpu_uri = EX[row['product_uri_id']]
@@ -61,14 +61,26 @@ def create_rdf():
         g.add((gpu_uri, RDF.type, SCHEMA.Product))
         g.add((gpu_uri, SCHEMA.name, Literal(row['product_name'])))
         
-        # GPU -> manufacturer (Brand)
+        # GPU -> manufacturer (Brand) predicate
         brand_uri = EX[row['brand_uri_id']]
         g.add((gpu_uri, SCHEMA.manufacturer, brand_uri))
 
-        # GPU -> architecture
+        # GPU -> architecture predicate
         if pd.notna(row['arch_uri_id']):
             arch_uri = EX[row['arch_uri_id']]
             g.add((gpu_uri, EX.hasArchitecture, arch_uri))
+
+        # Release date to XSD date format (YYYY-MM-DD)
+        if 'release_date_xsd' in row and pd.notna(row['release_date_xsd']):
+            g.add((gpu_uri, SCHEMA.releaseDate, Literal(row['release_date_xsd'], datatype=XSD.date)))
+
+        # Year to integer
+        if 'release_year' in row and pd.notna(row['release_year']):
+            g.add((gpu_uri, EX.releaseYear, Literal(int(row['release_year']), datatype=XSD.integer)))
+
+        # Month to integer
+        if 'release_month' in row and pd.notna(row['release_month']):
+            g.add((gpu_uri, EX.releaseMonth, Literal(int(row['release_month']), datatype=XSD.integer)))
 
         # XSD typed literals for numeric properties
         if pd.notna(row['tdp_watts']):

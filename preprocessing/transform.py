@@ -49,9 +49,31 @@ def process_dates(df):
     )
 
     # 3. Extraction of day: We look for 1 to 2 digits followed by st, nd, rd, or th
-    df['release_day'] = df[date_col].str.extract(r'\b(\d{1,2})(?:st|nd|rd|th)\b')
+    df['release_day'] = df[date_col].str.extract(
+        r'\b(\d{1,2})(?:st|nd|rd|th)\b',
+        expand=False
+    )
 
+    df['release_day'] = df['release_day'].str.zfill(2)
+
+    # 4. Create xsd:date column (YYYY-MM-DD)
+    df['release_date_xsd'] = pd.to_datetime(
+        df['release_year'].astype(str) + '-' +
+        df['release_month'].astype(str).str.zfill(2) + '-' +
+        df['release_day'].astype(str),
+        errors='coerce'
+    ).dt.strftime('%Y-%m-%d')
+
+    # 5. Keep month only where month exists AND day is missing
+    mask_month_only = df['release_month'].notna() & df['release_day'].isna()
+    df.loc[~mask_month_only, 'release_month'] = pd.NA
+
+    # 6. Drop day column completely
+    df = df.drop(columns=['release_day'])
+
+    # 7. Drop original release_date column
     df = df.drop(columns=['release_date'])
+
     print("Release date processed.")
     return df
 
@@ -472,11 +494,13 @@ def main():
             print(f"Saved to: {PROCESSED_CSV_PATH}")
             print(df.head(15))
 
+
+
+            print("\ncsv cleanup - all done\n")
     except Exception as e:
         print(f"Error: {e}")
 
 
-
 if __name__ == "__main__":
     main()
-    print("\ncsv cleanup - all done\n")
+    print("Transform Main finished")
