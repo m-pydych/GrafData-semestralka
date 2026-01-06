@@ -34,6 +34,17 @@ def rename_columns(df):
 
 """Process columns."""
 
+def process_name(df):
+    
+
+    return df
+
+
+
+
+
+
+
 def process_dates(df):
     """Year Month Day extraction from 'release_date' and delete original column."""
     date_col = 'release_date'
@@ -392,7 +403,46 @@ def final_polish(df):
     df = df.drop(columns=[col for col in cols_to_remove if col in df.columns])
 
 
-    print(f"Final polish done, duplicates: {duplicate_count}\n")
+    print(f"Final polish done, duplicates removed: {duplicate_count}")
+    return df
+
+def create_uri_slug(text):
+    """Creates a URI-friendly slug from the given text."""
+    if pd.isna(text) or str(text).strip() == "":
+        return None
+    
+    # Převod na string a základní čištění
+    s = str(text).strip()
+    
+    # Nahrazení mezer, lomítek a spojovníků podtržítkem
+    s = s.replace(" ", "_").replace("/", "_").replace("-", "_").replace("|", "_")
+    
+    # Odstranění závorek a dalších znaků, které v IRI nechceme
+    s = s.replace("(", "").replace(")", "").replace("[", "").replace("]", "")
+    s = s.replace(",", "").replace(".", "_") # Tečky u verzí raději nahradíme
+    
+    # Odstranění vícenásobných podtržítek (např. __ -> _)
+    import re
+    s = re.sub(r'_+', '_', s)
+    
+    return s.strip("_")
+
+def process_uri_ids(df):
+    """Generates URI-friendly identifiers (slugs) for brands, architectures, and products."""
+    
+    # 1. For products (GPUs)
+    df['product_uri_id'] = df.apply(
+        lambda row: create_uri_slug(f"{row['brand']} {row['product_name']}"), 
+        axis=1
+    )
+
+    # 2. For brands
+    df['brand_uri_id'] = df['brand'].apply(create_uri_slug)
+
+    # 3. For GPU architectures
+    df['arch_uri_id'] = df['architecture'].apply(create_uri_slug)
+
+    print("URI identifiers generated.")
     return df
 
 
@@ -407,7 +457,7 @@ def main():
             df = rename_columns(df)
 
             # brand OK
-            # product_name OK           
+            # product_name OK
             df = process_dates(df)
             # gpu_name OK
             df = process_codename(df)
@@ -423,6 +473,7 @@ def main():
             df = process_price(df)
 
             df = final_polish(df)
+            df = process_uri_ids(df)
 
             df.to_csv(OUTPUT_PATH, index=False)
             print(f"Saved to: {OUTPUT_PATH}")
