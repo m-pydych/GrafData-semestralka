@@ -2,8 +2,9 @@ import pandas as pd
 import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-INPUT_PATH = os.path.join(BASE_DIR, '..', 'data', 'gpu_1986-2026.csv')
-OUTPUT_PATH = os.path.join(BASE_DIR, '..', 'data', 'gpu_info_cleaned.csv')
+RAW_CSV_PATH = os.path.join(BASE_DIR, '..', 'data', 'gpu_1986-2026.csv')
+PROCESSED_CSV_PATH = os.path.join(BASE_DIR, '..', 'data', 'gpu_info_cleaned.csv')
+OUTPUT_RDF_PATH = os.path.join(BASE_DIR, '..', 'data', 'gpu_data.ttl')
 
 KEEP_COLUMNS = [
     'Brand',

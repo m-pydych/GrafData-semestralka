@@ -1,15 +1,15 @@
 import pandas as pd
 import re
-from config import INPUT_PATH, OUTPUT_PATH, KEEP_COLUMNS, RENAME_COLUMNS
+from config import RAW_CSV_PATH, PROCESSED_CSV_PATH, KEEP_COLUMNS, RENAME_COLUMNS
 
 def load_data():
     try:
-        df = pd.read_csv(INPUT_PATH)
-        print(f"Data loaded from: {INPUT_PATH}")
+        df = pd.read_csv(RAW_CSV_PATH)
+        print(f"Data loaded from: {RAW_CSV_PATH}")
         return df
 
     except FileNotFoundError:
-        print(f"Error: file '{INPUT_PATH}' not found.")
+        print(f"Error: file '{RAW_CSV_PATH}' not found.")
   
 
 def trim_dataset(df):
@@ -475,10 +475,9 @@ def main():
             df = final_polish(df)
             df = process_uri_ids(df)
 
-            df.to_csv(OUTPUT_PATH, index=False)
-            print(f"Saved to: {OUTPUT_PATH}")
+            df.to_csv(PROCESSED_CSV_PATH, index=False)
+            print(f"Saved to: {PROCESSED_CSV_PATH}")
             print(df.head(15))
-            print("\nall done\n")
 
     except Exception as e:
         print(f"Chyba: {e}")
@@ -487,3 +486,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    print("\ncsv cleanup - all done\n")

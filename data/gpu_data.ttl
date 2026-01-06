@@ -1,4 +1,5 @@
 @prefix ex: <http://example.org/gpu/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix schema: <https://schema.org/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
@@ -21591,6 +21592,7 @@ ex:XGI_Volari_V8_Ultra a schema:Product ;
     schema:name "Volari V8 Ultra" .
 
 ex:CDNA_1_0 a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q122910241> ;
     schema:name "CDNA 1.0" .
 
 ex:G100 a ex:GPUArchitecture ;
@@ -21648,6 +21650,7 @@ ex:i740 a ex:GPUArchitecture ;
     schema:name "i740" .
 
 ex:CDNA_2_0 a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q122910429> ;
     schema:name "CDNA 2.0" .
 
 ex:IBM a ex:GPUArchitecture ;
@@ -21672,6 +21675,7 @@ ex:Voodoo_Scalable a ex:GPUArchitecture ;
     schema:name "Voodoo Scalable" .
 
 ex:Blackwell a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q125210777> ;
     schema:name "Blackwell" .
 
 ex:Intel_Gen_6_0 a ex:GPUArchitecture ;
@@ -21699,6 +21703,7 @@ ex:S3 a schema:Organization ;
     schema:name "S3" .
 
 ex:CDNA_3_0 a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q122910941> ;
     schema:name "CDNA 3.0" .
 
 ex:G400 a ex:GPUArchitecture ;
@@ -21717,18 +21722,22 @@ ex:Rage_3 a ex:GPUArchitecture ;
     schema:name "Rage 3" .
 
 ex:Fahrenheit a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q105821181> ;
     schema:name "Fahrenheit" .
 
 ex:Intel_Gen_11_0 a ex:GPUArchitecture ;
     schema:name "Intel Gen 11.0" .
 
 ex:RDNA_3_5 a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q127500783> ;
     schema:name "RDNA 3.5" .
 
 ex:RDNA_4_0 a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q132857485> ;
     schema:name "RDNA 4.0" .
 
 ex:Sony a schema:Organization ;
+    owl:sameAs <https://www.wikidata.org/entity/Q41187> ;
     schema:name "Sony" .
 
 ex:XG4 a ex:GPUArchitecture ;
@@ -21747,6 +21756,7 @@ ex:SiS a schema:Organization ;
     schema:name "SiS" .
 
 ex:Hopper a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q85767253> ;
     schema:name "Hopper" .
 
 ex:Intel_Gen_12_1 a ex:GPUArchitecture ;
@@ -21759,6 +21769,7 @@ ex:Parhelia a ex:GPUArchitecture ;
     schema:name "Parhelia" .
 
 ex:GCN_5_1 a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q126368317> ;
     schema:name "GCN 5.1" .
 
 ex:Intel_Gen_7_5 a ex:GPUArchitecture ;
@@ -21768,12 +21779,15 @@ ex:Intel_Gen_9_0 a ex:GPUArchitecture ;
     schema:name "Intel Gen 9.0" .
 
 ex:3dfx a schema:Organization ;
+    owl:sameAs <https://www.wikidata.org/entity/Q229698> ;
     schema:name "3dfx" .
 
 ex:Kelvin a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q105721355> ;
     schema:name "Kelvin" .
 
 ex:Volta a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q16682931> ;
     schema:name "Volta" .
 
 ex:Intel_Xe_HPG a ex:GPUArchitecture ;
@@ -21792,6 +21806,7 @@ ex:Kepler_2_0 a ex:GPUArchitecture ;
     schema:name "Kepler 2.0" .
 
 ex:RDNA_1_0 a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q65045708> ;
     schema:name "RDNA 1.0" .
 
 ex:Rage_6 a ex:GPUArchitecture ;
@@ -21801,48 +21816,60 @@ ex:Blackwell_2_0 a ex:GPUArchitecture ;
     schema:name "Blackwell 2.0" .
 
 ex:RDNA_3_0 a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q115118439> ;
     schema:name "RDNA 3.0" .
 
 ex:Matrox a schema:Organization ;
+    owl:sameAs <https://www.wikidata.org/entity/Q528313> ;
     schema:name "Matrox" .
 
 ex:TeraScale_3 a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q90540261> ;
     schema:name "TeraScale 3" .
 
 ex:Rage_7 a ex:GPUArchitecture ;
     schema:name "Rage 7" .
 
 ex:GCN_5_0 a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q90575343> ;
     schema:name "GCN 5.0" .
 
 ex:Maxwell_2_0 a ex:GPUArchitecture ;
     schema:name "Maxwell 2.0" .
 
 ex:Maxwell a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q15918207> ;
     schema:name "Maxwell" .
 
 ex:Ada_Lovelace a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q114068528> ;
     schema:name "Ada Lovelace" .
 
 ex:RDNA_2_0 a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q101542263> ;
     schema:name "RDNA 2.0" .
 
 ex:Celsius a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q105721324> ;
     schema:name "Celsius" .
 
 ex:R400 a ex:GPUArchitecture ;
     schema:name "R400" .
 
 ex:Rankine a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q105721387> ;
     schema:name "Rankine" .
 
 ex:GCN_3_0 a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q90575292> ;
     schema:name "GCN 3.0" .
 
 ex:Fermi a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q3068993> ;
     schema:name "Fermi" .
 
 ex:GCN_2_0 a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q90575329> ;
     schema:name "GCN 2.0" .
 
 ex:R300 a ex:GPUArchitecture ;
@@ -21858,44 +21885,58 @@ ex:Fermi_2_0 a ex:GPUArchitecture ;
     schema:name "Fermi 2.0" .
 
 ex:Pascal a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q19609913> ;
     schema:name "Pascal" .
 
 ex:Turing a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q56231123> ;
     schema:name "Turing" .
 
 ex:GCN_4_0 a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q90575336> ;
     schema:name "GCN 4.0" .
 
 ex:Ampere a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q65043984> ;
     schema:name "Ampere" .
 
 ex:Kepler a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q4219463> ;
     schema:name "Kepler" .
 
 ex:Curie a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q105721504> ;
     schema:name "Curie" .
 
 ex:TeraScale a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q90540251> ;
     schema:name "TeraScale" .
 
 ex:Tesla a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q1050485> ;
     schema:name "Tesla" .
 
 ex:GCN_1_0 a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q90575278> ;
     schema:name "GCN 1.0" .
 
 ex:Intel a schema:Organization ;
+    owl:sameAs <https://www.wikidata.org/entity/Q248> ;
     schema:name "Intel" .
 
 ex:TeraScale_2 a ex:GPUArchitecture ;
+    owl:sameAs <https://www.wikidata.org/entity/Q90540256> ;
     schema:name "TeraScale 2" .
 
 ex:ATI a schema:Organization ;
+    owl:sameAs <https://www.wikidata.org/entity/Q213849> ;
     schema:name "ATI" .
 
 ex:AMD a schema:Organization ;
+    owl:sameAs <https://www.wikidata.org/entity/Q128896> ;
     schema:name "AMD" .
 
 ex:NVIDIA a schema:Organization ;
+    owl:sameAs <https://www.wikidata.org/entity/Q182477> ;
     schema:name "NVIDIA" .
 
