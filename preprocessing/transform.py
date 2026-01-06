@@ -1,6 +1,6 @@
 import pandas as pd
 import re
-from config import RAW_CSV_PATH, PROCESSED_CSV_PATH, KEEP_COLUMNS, RENAME_COLUMNS
+from config import MONTH_MAP, RAW_CSV_PATH, PROCESSED_CSV_PATH, KEEP_COLUMNS, RENAME_COLUMNS
 
 def load_data():
     try:
@@ -34,17 +34,6 @@ def rename_columns(df):
 
 """Process columns."""
 
-def process_name(df):
-    
-
-    return df
-
-
-
-
-
-
-
 def process_dates(df):
     """Year Month Day extraction from 'release_date' and delete original column."""
     date_col = 'release_date'
@@ -53,7 +42,11 @@ def process_dates(df):
     df['release_year'] = df[date_col].str.extract(r'((?:19|20)\d{2})')
 
     # 2. Extraction of month: We look for a word of at least 3 letters (Jan, Feb, October...)
-    df['release_month'] = df[date_col].str.extract(r'([a-zA-Z]{3,})')
+    df['release_month'] = (
+        df[date_col]
+        .str.extract(r'\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b', expand=False)
+        .map(MONTH_MAP)
+    )
 
     # 3. Extraction of day: We look for 1 to 2 digits followed by st, nd, rd, or th
     df['release_day'] = df[date_col].str.extract(r'\b(\d{1,2})(?:st|nd|rd|th)\b')
@@ -480,7 +473,7 @@ def main():
             print(df.head(15))
 
     except Exception as e:
-        print(f"Chyba: {e}")
+        print(f"Error: {e}")
 
 
 

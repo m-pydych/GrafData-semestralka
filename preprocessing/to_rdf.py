@@ -2,7 +2,7 @@ import pandas as pd
 from rdflib import Graph, Literal, RDF, Namespace, URIRef
 from rdflib.namespace import XSD, OWL
 from config import PROCESSED_CSV_PATH, OUTPUT_RDF_PATH
-from Linkset import BRAND_LINKS, ARCH_LINKS
+from linkset import BRAND_LINKS, ARCH_LINKS
 
 # 1. Namespace definitions
 EX = Namespace("http://example.org/gpu/")
