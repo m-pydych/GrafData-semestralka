@@ -39468,8 +39468,8 @@ ex:boostClockMHz a rdf:Property ;
     rdfs:range xsd:integer .
 
 ex:fp32GFlops a rdf:Property ;
-    rdfs:label "FP32 Performance (GFLOPS)"@en ;
-    rdfs:comment "Theoretical peak single-precision (FP32) floating-point performance of the GPU, measured in GFLOPS."@en ;
+    rdfs:label "FP32 Performance (GFlops)"@en ;
+    rdfs:comment "Theoretical peak single-precision (FP32) floating-point performance of the GPU, measured in GFlops."@en ;
     rdfs:range xsd:float .
 
 ex:gpuCodename a rdf:Property ;

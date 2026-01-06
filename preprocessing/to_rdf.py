@@ -57,9 +57,9 @@ RDF_PROPERTIES = {
         "The width of the memory interface between the GPU and its video memory, measured in bits."
     ),
     EX.fp32GFlops: (
-        "FP32 Performance (GFLOPS)",
+        "FP32 Performance (GFlops)",
         XSD.float,
-        "Theoretical peak single-precision (FP32) floating-point performance of the GPU, measured in GFLOPS."
+        "Theoretical peak single-precision (FP32) floating-point performance of the GPU, measured in GFlops."
     ),
     EX.baseClockMHz: (
         "Base Clock (MHz)",
