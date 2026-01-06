@@ -1,5 +1,6 @@
 import pandas as pd
 import re
+import hashlib
 from config import MONTH_MAP, RAW_CSV_PATH, PROCESSED_CSV_PATH, KEEP_COLUMNS, RENAME_COLUMNS
 
 def load_data():
@@ -442,14 +443,25 @@ def create_uri_slug(text):
     
     return s.strip("_")
 
+def make_product_uri(row, hash_len=8):
+        # Sloupce, které určují variantu
+        variant_cols = [
+        'brand', 'product_name', 'gpu_name', 'gpu_codename', 'architecture',
+        'shading_units', 'base_clock', 'boost_clock', 'mem_size', 'mem_type', 'mem_bus',
+        'launch_price', 'release_year', 'release_month', 'release_date_xsd',
+        'max_clock_mhz', 'mem_size_kb', 'mem_bus_bits', 'bandwidth_mbs',
+        'is_system_dependent', 'fp32_gflops', 'tdp_watts'
+]
+
+        identity_str = "|".join([str(row[c]) if c in row and pd.notna(row[c]) else "" for c in variant_cols])
+        h = hashlib.sha256(identity_str.encode('utf-8')).hexdigest()[:hash_len]
+        return f"{row['brand']}_{h}"
+
 def process_uri_ids(df):
     """Generates URI-friendly identifiers (slugs) for brands, architectures, and products."""
     
     # 1. For products (GPUs)
-    df['product_uri_id'] = df.apply(
-        lambda row: create_uri_slug(f"{row['brand']} {row['product_name']}"), 
-        axis=1
-    )
+    df['product_uri_id'] = df.apply(make_product_uri, axis=1)
 
     # 2. For brands
     df['brand_uri_id'] = df['brand'].apply(create_uri_slug)
