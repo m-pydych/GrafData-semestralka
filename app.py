@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from rdflib import Graph, Namespace, URIRef, RDFS
 from streamlit_agraph import agraph, Node, Edge, Config
+import os
 
 # 1. NASTAVENÍ NAMESPACŮ
 EX = Namespace("http://example.org/gpu/")
@@ -16,11 +17,20 @@ def load_gpu_graph():
     g.bind("ex", EX)
     g.bind("schema", SCHEMA)
     g.bind("rdfs", RDFS)
+    
+    # 1. Zjistíme, kde leží tento skript (app.py)
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    
+    # 2. Sestavíme cestu k souboru (předpokládám, že je ve stejné složce jako app.py)
+    # Pokud ho máš ve složce 'data', změň to na os.path.join(base_path, "data", "gpu_data.ttl")
+    ttl_path = os.path.join(base_path, "gpu_data.ttl")
+    
     try:
-        # Pokud máš soubor v jiné složce, uprav cestu zde
-        g.parse("gpu_data.ttl", format="turtle")
+        g.parse(ttl_path, format="turtle")
+        # st.success(f"Data úspěšně načtena z: {ttl_path}") # Volitelné pro kontrolu
     except Exception as e:
         st.error(f"Chyba při načítání dat: {e}")
+        st.info(f"Hledal jsem na cestě: {ttl_path}")
     return g
 
 g = load_gpu_graph()
