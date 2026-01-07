@@ -26,7 +26,7 @@ def show_console(g):
             # Převod výsledků do tabulky
             res_list = []
             for row in results:
-                res_list.append(row.asdict())
+                res_list.append({str(k): (v.toPython() if hasattr(v, 'toPython') else str(v)) for k, v in row.asdict().items()})
             
             if res_list:
                 df_res = pd.DataFrame(res_list)

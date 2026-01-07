@@ -9,7 +9,7 @@ def show_wiki(g, EX, SCHEMA):
     q_archs = """
     SELECT DISTINCT ?arch ?name WHERE {
         ?arch a <http://example.org/gpu/GPUArchitecture> ;
-              <https://schema.org/name> ?name .
+              <https://schema.org/name> ?name 
     } ORDER BY ?name
     """
     arch_options = {str(r.name): str(r.arch) for r in g.query(q_archs)}
@@ -32,8 +32,8 @@ def show_wiki(g, EX, SCHEMA):
         data.append({
             "uri": str(r.gpu),
             "Name": str(r.name),
-            "Year": int(r.year) if r.year else 'unknown',
-            "Performance (GFLOPS)": float(r.perf) if r.perf else 'unknown'
+            "Year": int(r.year) if r.year else None,
+            "Performance (GFLOPS)": float(r.perf) if r.perf else None
         })
     
     df = pd.DataFrame(data)
@@ -44,21 +44,22 @@ def show_wiki(g, EX, SCHEMA):
         perf_df = df[df["Performance (GFLOPS)"] > 0].sort_values("Performance (GFLOPS)")
         
         if len(perf_df) >= 3:
-            st.write("### 📊 Statistické zajímavosti výkonu")
+            st.write("### Statistics")
             cols = st.columns(3)
             
-            best = perf_df.iloc[0] # best
-            Median = perf_df.iloc[len(perf_df)//2] # Median
-            worst = perf_df.iloc[-1] # worst
+            worst = perf_df.iloc[0] # worst
+            Median = perf_df.iloc[len(perf_df)//2] # median
+            best = perf_df.iloc[-1] # best
 
-            cols[0].metric("The best", f"{worst['Performance (GFLOPS)']} GFLOPS")
-            cols[0].caption(worst['Name'])
-
-            cols[1].metric("Middle", f"{Median['Performance (GFLOPS)']} GFLOPS")
-            cols[1].caption(Median['Name'])
-
-            cols[2].metric("The worst", f"{best['Performance (GFLOPS)']} GFLOPS")
-            cols[2].caption(best['Name'])
+            cols[0].metric(worst['Name'])
+            cols[0].caption("The best", f"{worst['Performance (GFLOPS)']} GFLOPS")
+            
+            cols[1].metric(Median['Name'])
+            cols[1].caption("Middle", f"{Median['Performance (GFLOPS)']} GFLOPS")
+            
+            cols[2].metric(best['Name'])
+            cols[2].caption("The worst", f"{best['Performance (GFLOPS)']} GFLOPS")
+            
         else:
             st.warning("not enough data to show statistics.")
 

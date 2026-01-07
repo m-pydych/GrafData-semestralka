@@ -20,7 +20,7 @@ def load_graph():
 g = load_graph()
 
 st.sidebar.title("GPU-LD Hub")
-page = st.sidebar.radio("Navigace:", ["SPARQL Endpoint", "GPU Encyclopedia"])
+page = st.sidebar.radio("Navigation", ["SPARQL Endpoint", "GPU Encyclopedia"])
 
 if page == "GPU Encyclopedia":
     show_wiki(g, EX, SCHEMA)
