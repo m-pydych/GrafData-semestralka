@@ -43,9 +43,11 @@ def show_wiki(g, EX, SCHEMA):
     # Build filter clause
     filter_clause = ""
     if filter_type == "Brand":
-        filter_clause = f'?brand_uri <https://schema.org/name> "{filter_value}" .'
+        # Použijeme pomocnou proměnnou ?bname a funkci STR() pro porovnání
+        filter_clause = f'?brand_uri <https://schema.org/name> ?bname . FILTER(STR(?bname) = "{filter_value}")'
     elif filter_type == "Architecture":
-        filter_clause = f'?arch_uri <https://schema.org/name> "{filter_value}" .'
+        # Totéž pro architekturu
+        filter_clause = f'?arch_uri <https://schema.org/name> ?aname . FILTER(STR(?aname) = "{filter_value}")'
     elif filter_type == "Release Year":
         filter_clause = f'FILTER(?year >= {filter_value})'
 
@@ -71,7 +73,14 @@ def show_wiki(g, EX, SCHEMA):
     @st.cache_data(hash_funcs={Graph: id})
     def run_dynamic_query(query_str):
         res = g.query(query_str)
-        return [{"Name": str(r.name), "Value": float(r.val), "Year": int(r.year) if r.year else None} for r in res]
+        # Přidáme .toPython() pro jistotu u číselných hodnot
+        return [
+            {
+                "Name": str(r.name), 
+                "Value": float(r.val.toPython()) if hasattr(r.val, 'toPython') else float(r.val), 
+                "Year": int(r.year.toPython()) if r.year and hasattr(r.year, 'toPython') else (int(r.year) if r.year else None)
+            } for r in res
+        ]
 
     results_list = run_dynamic_query(main_query)
     df = pd.DataFrame(results_list)
