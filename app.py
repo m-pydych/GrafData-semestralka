@@ -18,19 +18,18 @@ def load_gpu_graph():
     g.bind("schema", SCHEMA)
     g.bind("rdfs", RDFS)
     
-    # 1. Zjistíme, kde leží tento skript (app.py)
+    # Zjistíme, kde leží tento skript (app.py)
     base_path = os.path.dirname(os.path.abspath(__file__))
     
-    # 2. Sestavíme cestu k souboru (předpokládám, že je ve stejné složce jako app.py)
-    # Pokud ho máš ve složce 'data', změň to na os.path.join(base_path, "data", "gpu_data.ttl")
-    ttl_path = os.path.join(base_path, "gpu_data.ttl")
+    # TADY JE TA OPRAVA: přidali jsme "data" do cesty
+    ttl_path = os.path.join(base_path, "data", "gpu_data.ttl")
     
     try:
         g.parse(ttl_path, format="turtle")
-        # st.success(f"Data úspěšně načtena z: {ttl_path}") # Volitelné pro kontrolu
     except Exception as e:
         st.error(f"Chyba při načítání dat: {e}")
         st.info(f"Hledal jsem na cestě: {ttl_path}")
+        st.warning("Ujistěte se, že soubor gpu_data.ttl je v GitHubu ve složce 'data'.")
     return g
 
 g = load_gpu_graph()
