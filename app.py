@@ -4,7 +4,6 @@ import os
 from src.wiki_browser import show_wiki
 from src.sparql_console import show_console
 
-# Společné Namespaces
 EX = Namespace("http://example.org/gpu/")
 SCHEMA = Namespace("https://schema.org/")
 
@@ -20,11 +19,10 @@ def load_graph():
 
 g = load_graph()
 
-# --- SIDEBAR NAVIGACE ---
-st.sidebar.title("🚀 GPU-LD Hub")
-page = st.sidebar.radio("Navigace:", ["📖 Prohlížeč (Wiki)", "💻 SPARQL Endpoint"])
+st.sidebar.title("GPU-LD Hub")
+page = st.sidebar.radio("Navigace:", ["SPARQL Endpoint", "GPU Encyclopedia"])
 
-if page == "📖 Prohlížeč (Wiki)":
+if page == "GPU Encyclopedia":
     show_wiki(g, EX, SCHEMA)
 else:
     show_console(g)

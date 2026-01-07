@@ -2,22 +2,24 @@ import streamlit as st
 import pandas as pd
 
 def show_console(g):
-    st.subheader("💻 SPARQL Endpoint (Simulation)")
-    st.write("Zde můžete simulovat dotazy, které by na tento hub posílaly jiné LD služby.")
+    st.subheader("SPARQL Endpoint")
+    st.write("manually run SPARQL queries against the database.")
 
     # Předdefinované šablony
     templates = {
-        "Všechny GPU značky NVIDIA": "SELECT ?gpu ?name WHERE {\n  ?gpu <https://schema.org/manufacturer> <http://example.org/gpu/NVIDIA> ;\n       <https://schema.org/name> ?name .\n} LIMIT 10",
-        "Karty s nejvyšším TDP": "SELECT ?name ?tdp WHERE {\n  ?gpu <http://example.org/gpu/tdpWatts> ?tdp ;\n       <https://schema.org/name> ?name .\n} ORDER BY DESC(?tdp) LIMIT 10",
-        "Počet karet podle roku": "SELECT ?year (COUNT(?gpu) AS ?count) WHERE {\n  ?gpu <http://example.org/gpu/releaseYear> ?year .\n} GROUP BY ?year ORDER BY ?year"
+        "All GPUs made by NVIDIA": "SELECT ?gpu ?name WHERE {\n  ?gpu <https://schema.org/manufacturer> <http://example.org/gpu/NVIDIA> ;\n       <https://schema.org/name> ?name .\n} LIMIT 10",
+        "Top 10 GPUs by TDP": "SELECT ?name ?tdp WHERE {\n  ?gpu <http://example.org/gpu/tdpWatts> ?tdp ;\n       <https://schema.org/name> ?name .\n} ORDER BY DESC(?tdp) LIMIT 10",
+        "Count of GPUs by year": "SELECT ?year (COUNT(?gpu) AS ?count) WHERE {\n  ?gpu <http://example.org/gpu/releaseYear> ?year .\n} GROUP BY ?year ORDER BY ?year",
+
+
     }
 
-    selected_template = st.selectbox("Vyberte ukázkový dotaz:", list(templates.keys()))
+    selected_template = st.selectbox("sample query:", list(templates.keys()))
     
     # Text area pro dotaz
-    query_input = st.text_area("SPARQL dotaz:", templates[selected_template], height=200)
+    query_input = st.text_area("SPARQL query:", templates[selected_template], height=200)
 
-    if st.button("Spustit dotaz ⚡"):
+    if st.button("Run Query"):
         try:
             results = g.query(query_input)
             
@@ -28,17 +30,17 @@ def show_console(g):
             
             if res_list:
                 df_res = pd.DataFrame(res_list)
-                st.success(f"Nalezeno {len(df_res)} výsledků.")
+                st.success(f"{len(df_res)} results returned.")
                 st.dataframe(df_res, use_container_width=True)
                 
                 # Sémantický export
                 st.download_button(
-                    "Stáhnout výsledky jako JSON",
+                    "dowload results as JSON",
                     df_res.to_json(orient="records"),
                     "results.json",
                     "application/json"
                 )
             else:
-                st.info("Dotaz nevrátil žádné výsledky.")
+                st.info("No results returned.")
         except Exception as e:
-            st.error(f"Chyba v dotazu: {e}")
+            st.error(f"Error in query: {e}")
