@@ -180,62 +180,91 @@ def process_clocks(df):
     return df
 
 def process_memory_size(df):
-    """Simplified memory conversion to KB."""
+    """Converts memory size literals to KB and generates IRI for each GPU."""
     col = 'mem_size'
-    
-    def convert(val):
-        # Convert to string and upper case to handle all variants (gb, GB, Gb) (I hope there are no bits, just bytes)
-        val = str(val).upper()
-        
-        try:
-            #remove unit, convert to number and multiply
-            if 'GB' in val:
-                return int(float(val.replace('GB', '').strip()) * 1024 * 1024)
-            
-            if 'MB' in val:
-                return int(float(val.replace('MB', '').strip()) * 1024)
-            
-            if 'KB' in val:
-                return int(float(val.replace('KB', '').strip()))
-                
-        except:
-            return None
-        return None
 
-    # Apply the logic and create the new column
-    df['mem_size_kb'] = df[col].apply(convert)
+    def convert(val):
+        if pd.isna(val) or str(val).strip() == "":
+            return None, None
+
+        val_str = str(val).strip()
+        
+        # System Shared handling
+        if val_str == "System Shared":
+            return None, "mem_size_SystemShared"
+
+        val_upper = val_str.upper()
+
+        try:
+            kb_value = None
+            if 'GB' in val_upper:
+                kb_value = int(float(val_upper.replace('GB', '').strip()) * 1024 * 1024)
+            elif 'MB' in val_upper:
+                kb_value = int(float(val_upper.replace('MB', '').strip()) * 1024)
+            elif 'KB' in val_upper:
+                kb_value = int(float(val_upper.replace('KB', '').strip()))
+            else:
+                raise ValueError(f"[FATAL ERROR] Unexpected format in Memory Size: '{val_str}'")
+
+            # Vytvoření IRI – odstranit všechny mezery a nahradit tečku podtržítkem
+            number_part = val_upper.replace('GB', '').replace('MB', '').replace('KB', '').strip().replace('.', '_').replace(' ', '_')
+            
+            if 'GB' in val_upper:
+                iri = f"mem_size_{number_part}_GB"
+            elif 'MB' in val_upper:
+                iri = f"mem_size_{number_part}_MB"
+            elif 'KB' in val_upper:
+                iri = f"mem_size_{number_part}_KB"
+            else:
+                iri = None
+
+            return kb_value, iri
+
+        except Exception as e:
+            print(e)
+            return None, None
+
+    # Apply the logic and create new columns
+    results = df[col].apply(convert)
+    df['mem_size_kb'] = results.apply(lambda x: x[0])
+    df['mem_size_iri'] = results.apply(lambda x: x[1])
     df['mem_size_kb'] = df['mem_size_kb'].astype('Int64')
-    print("Memory size converted.")
+    df = df.drop(columns=['mem_size'])
+
+    print("Memory size converted and IRI generated.")
     return df
 
 def process_memory_bus(df):
     """Cleans memory bus width"""
     col = 'mem_bus'
     
-    def convert_to_int(val):
+    def convert_to_iri(val):
         if pd.isna(val) or str(val).strip() == "":
-            return None
+            return None, None
         
         val_str = str(val).strip()
         
         # System Shared handling
         if val_str == "System Shared":
-            return None
+            return "memBus_SystemShared", None
             
         # Strict check for 'bit'
         if "bit" in val_str:
             try:
-                return int(val_str.replace("bit", "").strip())
+                num = int(val_str.replace("bit", "").strip())
+                iri = f"memBus_{num}"
+                return iri, num
             except:
-                return None
+                raise ValueError(f"[FATAL ERROR] Unexpected format in Memory Bus: '{val_str}'")
         else:
-            # Fatal error if unknown format found
             raise ValueError(f"[FATAL ERROR] Unexpected format in Memory Bus: '{val_str}'")
 
     try:
-        df['mem_bus_bits'] = df[col].apply(convert_to_int)
-        df['mem_bus_bits'] = df['mem_bus_bits'].astype('Int64')
-        print("Memory bus width processed.")
+        results = df[col].apply(convert_to_iri)
+        df['mem_bus_iri'] = results.apply(lambda x: x[0])
+        df['mem_bus_sort'] = results.apply(lambda x: x[1])
+        df['mem_bus_sort'] = df['mem_bus_sort'].astype('Int64')
+        print("Memory bus converted to IRI and sort integer created.")
     except ValueError as ve:
         print(ve)
         exit()
@@ -447,9 +476,9 @@ def make_product_uri(row, hash_len=10):
         # Sloupce, které určují variantu
         variant_cols = [
         'brand', 'product_name', 'gpu_name', 'gpu_codename', 'architecture',
-        'shading_units', 'base_clock', 'boost_clock', 'mem_size', 'mem_type', 'mem_bus',
+        'shading_units', 'base_clock', 'boost_clock', 'mem_size', 'mem_type', 'mem_bus_iri',
         'launch_price', 'release_year', 'release_month', 'release_date_xsd',
-        'max_clock_mhz', 'mem_size_kb', 'mem_bus_bits', 'bandwidth_mbs',
+        'max_clock_mhz', 'mem_size_kb', 'mem_bus_sort', 'bandwidth_mbs',
         'is_system_dependent', 'fp32_gflops', 'tdp_watts'
 ]
 

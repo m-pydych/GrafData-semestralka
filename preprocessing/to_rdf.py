@@ -51,7 +51,7 @@ RDF_PROPERTIES = {
         XSD.integer,
         "The number of programmable processing units responsible for shading and compute tasks (e.g., CUDA cores or Stream Processors)."
     ),
-    EX.memoryBusBits: (
+    EX.memoryBusSort: (
         "Memory Bus (bits)",
         XSD.integer,
         "The width of the memory interface between the GPU and its video memory, measured in bits."
@@ -75,6 +75,11 @@ RDF_PROPERTIES = {
         "Max Clock (MHz)",
         XSD.integer,
         "The maximum achievable clock frequency of the GPU core as specified by the manufacturer."
+    ),
+    EX.isSystemDependent: (
+    "is system dependent", 
+    RDFS.Resource, 
+    "Indicates that the GPU is a system-dependent device (e.g., integrated graphics or requires a specific host configuration)."
     ),
 }
 
@@ -114,6 +119,10 @@ def create_rdf():
         g.add((brand_uri, RDF.type, SCHEMA.Organization))
         g.add((brand_uri, SCHEMA.name, Literal(brand_name, lang='en')))
 
+        g.add((EX.SystemDependentDevice, RDF.type, RDFS.Class))
+        g.add((EX.SystemDependentDevice, RDFS.label, Literal("System Dependent Device", lang="en")))
+        g.add((EX.SystemDependentDevice, RDFS.comment, Literal("A category for GPUs that are integrated or otherwise system-dependent.", lang="en")))
+
         # wikidata links
         if brand_name in BRAND_LINKS and BRAND_LINKS[brand_name]:
             external_uri = URIRef(BRAND_LINKS[brand_name])
@@ -134,6 +143,14 @@ def create_rdf():
             external_uri = URIRef(ARCH_LINKS[arch_name])
             g.add((arch_uri, OWL.sameAs, external_uri))
 
+    # MemSize nodes (unique)
+    if 'mem_size_iri' in df.columns:
+        unique_mem_sizes = df[['mem_size_iri']].drop_duplicates()
+        for _, row in unique_mem_sizes.iterrows():
+            mem_size_iri = EX[row['mem_size_iri']]
+            g.add((mem_size_iri, RDF.type, EX.MemorySize))
+
+
     # GPU Product 
     for _, row in df.iterrows():
         
@@ -151,8 +168,11 @@ def create_rdf():
         if pd.notna(row['shading_units']):
             g.add((gpu_uri, EX.shadingUnits, Literal(int(row['shading_units']), datatype=XSD.integer)))
 
-        if pd.notna(row['mem_bus_bits']):
-            g.add((gpu_uri, EX.memoryBusBits, Literal(int(row['mem_bus_bits']), datatype=XSD.integer)))
+        if pd.notna(row['mem_bus_sort']):
+            g.add((gpu_uri, EX.memoryBusSort, Literal(int(row['mem_bus_sort']), datatype=XSD.integer)))
+
+        if pd.notna(row['mem_bus_iri']):
+            g.add((gpu_uri, EX.memBus, EX[row['mem_bus_iri']]))
 
         if pd.notna(row['fp32_gflops']):
             g.add((gpu_uri, EX.fp32GFlops, Literal(float(row['fp32_gflops']), datatype=XSD.float)))
@@ -168,6 +188,9 @@ def create_rdf():
 
         if pd.notna(row['max_clock_mhz']):
             g.add((gpu_uri, EX.maxClockMHz, Literal(int(row['max_clock_mhz']), datatype=XSD.integer)))
+
+        if 'is_system_dependent' in row and row['is_system_dependent'] is True:
+            g.add((gpu_uri, EX.isSystemDependent, EX.SystemDependentDevice))
         
         # GPU -> manufacturer (Brand) predicate
         brand_uri = EX[row['brand_uri_id']]
@@ -196,6 +219,10 @@ def create_rdf():
         
         if pd.notna(row['mem_size_kb']):
             g.add((gpu_uri, EX.memorySizeKB, Literal(int(row['mem_size_kb']), datatype=XSD.integer)))
+
+        if pd.notna(row['mem_size_iri']):
+            g.add((gpu_uri, EX.memorySize, EX[row['mem_size_iri']]))
+
 
     # Save to Turtle file
     g.serialize(destination=OUTPUT_RDF_PATH, format="turtle")
