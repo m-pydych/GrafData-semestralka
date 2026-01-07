@@ -17,36 +17,21 @@ def load_gpu_graph():
     g.bind("ex", EX)
     g.bind("schema", SCHEMA)
     g.bind("rdfs", RDFS)
-    
-    # Zjistíme, kde leží tento skript (app.py)
     base_path = os.path.dirname(os.path.abspath(__file__))
-    
-    # TADY JE TA OPRAVA: přidali jsme "data" do cesty
     ttl_path = os.path.join(base_path, "data", "gpu_data.ttl")
-    
     try:
         g.parse(ttl_path, format="turtle")
     except Exception as e:
         st.error(f"Chyba při načítání dat: {e}")
-        st.info(f"Hledal jsem na cestě: {ttl_path}")
-        st.warning("Ujistěte se, že soubor gpu_data.ttl je v GitHubu ve složce 'data'.")
     return g
 
 g = load_gpu_graph()
 
 # 3. POMOCNÉ FUNKCE
 def get_label(uri):
-    """Získá rdfs:label nebo schema:name, jinak vrátí zkrácené ID."""
-    # Zkusíme najít label nebo jméno
-    query = f"""
-    SELECT ?label WHERE {{
-        <{uri}> (rdfs:label|schema:name) ?label .
-    }} LIMIT 1
-    """
+    query = f"SELECT ?label WHERE {{ <{uri}> (rdfs:label|schema:name) ?label . }} LIMIT 1"
     res = list(g.query(query))
-    if res:
-        return str(res[0][0])
-    return str(uri).replace(str(EX), "").replace(str(SCHEMA), "")
+    return str(res[0][0]) if res else str(uri).split("/")[-1]
 
 def short_id(uri):
     return str(uri).replace(str(EX), "ex:").replace(str(SCHEMA), "schema:")
@@ -57,40 +42,44 @@ if 'current_uri' not in st.session_state:
 
 # --- SIDEBAR: VYHLEDÁVÁNÍ ---
 st.sidebar.header("🔍 Vyhledávání")
-search_query = st.sidebar.text_input("Najít uzel (GPU, Značka, Arch...):")
-
+search_query = st.sidebar.text_input("Najít kartu/uzel:")
 if search_query:
-    q_search = f"""
-    SELECT ?node ?name WHERE {{
-        ?node (schema:name|rdfs:label) ?name .
-        FILTER (CONTAINS(LCASE(?name), LCASE("{search_query}")))
-    }} LIMIT 8
-    """
-    res = g.query(q_search)
-    for r in res:
-        if st.sidebar.button(f"👉 {r.name}", key=f"search_{r.node}"):
+    q_search = f"""SELECT ?node ?name WHERE {{ ?node (schema:name|rdfs:label) ?name . 
+    FILTER (CONTAINS(LCASE(?name), LCASE("{search_query}"))) }} LIMIT 10"""
+    for r in g.query(q_search):
+        if st.sidebar.button(f"👉 {r.name}", key=f"s_{r.node}"):
             st.session_state.current_uri = str(r.node)
             st.rerun()
 
 # --- HLAVNÍ PLOCHA ---
 curr = URIRef(st.session_state.current_uri)
-node_label = get_label(curr)
-
-st.title(f"📍 {node_label}")
-st.caption(f"URI: {short_id(curr)}")
+st.title(f"📍 {get_label(curr)}")
 
 col1, col2 = st.columns([1, 2])
 
 with col1:
-    st.subheader("📄 Seznam a filtrace")
+    # SEKCE A: Vlastnosti aktuálního uzlu
+    with st.expander("📄 Technické detaily uzlu", expanded=True):
+        q_props = f"SELECT ?p ?o WHERE {{ <{curr}> ?p ?o . }}"
+        for p, o in g.query(q_props):
+            p_lab = short_id(p)
+            if isinstance(o, URIRef):
+                if st.button(f"{p_lab} ⮕ {get_label(o)}", key=f"prop_{o}_{p}"):
+                    st.session_state.current_uri = str(o)
+                    st.rerun()
+            else:
+                st.write(f"**{p_lab}:** {o}")
+
+    st.divider()
+
+    # SEKCE B: Seznam sousedů (Příchozí vazby)
+    st.subheader("🔗 Související položky")
     
-    # --- NASTAVENÍ FILTRŮ A ŘAZENÍ ---
     sort_by = st.selectbox("Řadit podle:", ["Názvu", "Roku vydání", "Velikosti VRAM"])
     sort_order = st.radio("Pořadí:", ["Vzestupně", "Sestupně"], horizontal=True)
-    
-    # --- SPARQL: Získání sousedů s metadaty ---
-    # Tento dotaz najde vše, co odkazuje na aktuální uzel, a vytáhne k tomu detaily
-    q_neighbors_full = f"""
+
+    # SPARQL pro sousedy
+    q_neigh = f"""
     SELECT DISTINCT ?target ?name ?year ?vram WHERE {{
         ?target ?p <{curr}> .
         ?target (schema:name|rdfs:label) ?name .
@@ -100,64 +89,66 @@ with col1:
     }}
     """
     
-    neighbor_data = []
-    for row in g.query(q_neighbors_full):
-        neighbor_data.append({
+    neighbor_list = []
+    for row in g.query(q_neigh):
+        neighbor_list.append({
             "uri": str(row.target),
             "Názvu": str(row.name),
             "Roku vydání": int(row.year) if row.year else 0,
             "Velikosti VRAM": int(row.vram) if row.vram else 0
         })
     
-    df_neighbors = pd.DataFrame(neighbor_data)
+    df = pd.DataFrame(neighbor_list)
 
-    if not df_neighbors.empty:
-        # --- LOGIKA ŘAZENÍ ---
-        ascending = (sort_order == "Vzestupně")
-        df_neighbors = df_neighbors.sort_values(by=sort_by, ascending=ascending).reset_index(drop=True)
+    if not df.empty:
+        df = df.sort_values(by=sort_by, ascending=(sort_order == "Vzestupně")).reset_index(drop=True)
         
-        # Omezení počtu zobrazených prvků v mapě (např. top 30), aby nezkolabovala
-        max_nodes = 30
-        df_visible = df_neighbors.head(max_nodes)
-        
-        # --- VÝPIS OČÍSLOVANÉHO SEZNAMU ---
+        # Filtrování v levém sloupci
+        max_nodes = 25
+        df_visible = df.head(max_nodes)
+
         for i, row in df_visible.iterrows():
             idx = i + 1
-            label = f"{idx}. {row['Názvu']}"
-            meta = f"({row['Roku vydání']}, {row['Velikosti VRAM'] // 1024} MB)" if row['Roku vydání'] > 0 else ""
-            
-            if st.button(f"{label} {meta}", key=f"list_{row['uri']}"):
+            meta = f"({row['Roku vydání']})" if row['Roku vydání'] > 0 else ""
+            if st.button(f"{idx}. {row['Názvu']} {meta}", key=f"nav_{row['uri']}", use_container_width=True):
                 st.session_state.current_uri = row['uri']
                 st.rerun()
         
-        if len(df_neighbors) > max_nodes:
-            st.info(f"Zobrazeno prvních {max_nodes} z {len(df_neighbors)} výsledků.")
+        if len(df) > max_nodes:
+            st.caption(f"A dalších {len(df) - max_nodes} uzlů...")
     else:
-        st.write("Žádné příchozí vazby pro tento uzel.")
+        st.write("Žádné příchozí vazby.")
 
 with col2:
-    st.subheader("🕸️ Mapa (číslo odpovídá seznamu vlevo)")
+    st.subheader("🕸️ Interaktivní mapa")
     
     nodes = []
     edges = []
     
-    # Centrální uzel (stále s textem, aby bylo jasné, kde jsme)
-    nodes.append(Node(id=str(curr), label=node_label, size=35, color="#FF4B4B"))
+    # Centrální uzel (červený)
+    nodes.append(Node(id=str(curr), label=get_label(curr), size=35, color="#FF4B4B"))
     
-    if not df_neighbors.empty:
+    # Přidání očíslovaných sousedů z DataFrame
+    if not df.empty:
         for i, row in df_visible.iterrows():
             idx = i + 1
-            # TADY JE TA ZMĚNA: label je jen číslo
             nodes.append(Node(
                 id=row['uri'], 
-                label=str(idx), 
+                label=str(idx), # Jen číslo!
                 size=20, 
-                color="#2196F3", # Modrá pro sousedy
-                title=row['Názvu'] # Tooltip po najetí myší
+                color="#2196F3",
+                title=row['Názvu'] # Jméno se ukáže při najetí myší
             ))
-            edges.append(Edge(source=row['uri'], target=str(curr), label=""))
+            edges.append(Edge(source=row['uri'], target=str(curr)))
 
-    config = Config(width=800, height=650, directed=True, nodeHighlightBehavior=True, physics=True)
+    # Také přidáme odchozí vazby do mapy (ty co jsou v Technických detailech)
+    q_out = f"SELECT ?p ?o WHERE {{ <{curr}> ?p ?o . FILTER(isIRI(?o)) }}"
+    for p, o in g.query(q_out):
+        if str(o) not in [n.id for n in nodes]:
+            nodes.append(Node(id=str(o), label=get_label(o), size=20, color="#4CAF50"))
+        edges.append(Edge(source=str(curr), target=str(o), label=short_id(p)))
+
+    config = Config(width=800, height=700, directed=True, physics=True)
     clicked = agraph(nodes=nodes, edges=edges, config=config)
     
     if clicked and clicked != st.session_state.current_uri:
