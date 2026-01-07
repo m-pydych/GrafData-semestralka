@@ -501,6 +501,23 @@ def process_uri_ids(df):
     print("URI identifiers generated.")
     return df
 
+def missing_values_report(df):
+    print("\nMissing values summary:")
+    missing_count = df.isna().sum()
+    missing_percent = (missing_count / len(df) * 100).round(2)
+    missing_report = pd.DataFrame({
+        "missing_count": missing_count,
+        "missing_percent": missing_percent
+    })
+    missing_report_sorted = missing_report.sort_values(by="missing_count", ascending=False)
+    missing = missing_report_sorted[missing_report_sorted["missing_count"] > 0]
+    complete = missing_report_sorted[missing_report_sorted["missing_count"] == 0].index.tolist()
+    if missing.empty:
+        print("No missing values found")
+    else:
+        print(missing)
+    if complete:
+        print("\nColumns with no missing values:", complete)
 
 def main():
     try:
@@ -533,15 +550,14 @@ def main():
 
             df.to_csv(PROCESSED_CSV_PATH, index=False)
             print(f"Saved to: {PROCESSED_CSV_PATH}")
-            print(df.head(15))
 
+            print("csv cleanup - all done")
 
-
-            print("\ncsv cleanup - all done\n")
+            missing_values_report(df)
     except Exception as e:
         print(f"Error: {e}")
 
 
 if __name__ == "__main__":
     main()
-    print("Transform Main finished")
+    print("\nTransform Main finished")
