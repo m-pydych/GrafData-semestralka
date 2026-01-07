@@ -41,24 +41,24 @@ def show_wiki(g, EX, SCHEMA):
     if not df.empty:
         st.info(f"Analyzing {len(df)} cards in architecture {selected_arch_name}")
         
-        perf_df = df[df["Performance (GFLOPS)"] > 0].sort_values("Performance (GFLOPS)")
+        perf_df = df[df["Performance (GFLOPS)"].notna() & (df["Performance (GFLOPS)"] > 0)].sort_values("Performance (GFLOPS)")
         
         if len(perf_df) >= 3:
             st.write("### Statistics")
             cols = st.columns(3)
             
-            worst = perf_df.iloc[0] # worst
-            Median = perf_df.iloc[len(perf_df)//2] # median
-            best = perf_df.iloc[-1] # best
+            worst = perf_df.iloc[0]
+            median = perf_df.iloc[len(perf_df)//2]
+            best = perf_df.iloc[-1]
 
-            cols[0].metric(worst['Name'])
-            cols[0].caption("The best", f"{worst['Performance (GFLOPS)']} GFLOPS")
+            cols[0].metric(label="The Best", value=best['Name'])
+            cols[0].caption(f"{best['Performance (GFLOPS)']} GFLOPS")
             
-            cols[1].metric(Median['Name'])
-            cols[1].caption("Middle", f"{Median['Performance (GFLOPS)']} GFLOPS")
+            cols[1].metric(label="Median", value=median['Name'])
+            cols[1].caption(f"{median['Performance (GFLOPS)']} GFLOPS")
             
-            cols[2].metric(best['Name'])
-            cols[2].caption("The worst", f"{best['Performance (GFLOPS)']} GFLOPS")
+            cols[2].metric(label="The Worst", value=worst['Name'])
+            cols[2].caption(f"{worst['Performance (GFLOPS)']} GFLOPS")
             
         else:
             st.warning("not enough data to show statistics.")
