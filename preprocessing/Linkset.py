@@ -9,7 +9,13 @@ BRAND_LINKS = {
     "ATI": "https://www.wikidata.org/entity/Q213849",
     "Sony": "https://www.wikidata.org/entity/Q41187",
     "3dfx": "https://www.wikidata.org/entity/Q229698",
-    "Matrox": "https://www.wikidata.org/entity/Q528313"
+    "Matrox": "https://www.wikidata.org/entity/Q528313",
+    "XGI": "https://www.wikidata.org/entity/Q550011",
+    "SiS": "https://www.wikidata.org/entity/Q376193",
+    "S3": "https://www.wikidata.org/entity/Q632336",
+    "VIA": "https://www.wikidata.org/entity/Q633839",
+
+
 }
 
 # Wikidata architecture links

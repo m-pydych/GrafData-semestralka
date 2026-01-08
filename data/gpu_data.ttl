@@ -46392,6 +46392,7 @@ ex:SiS_1st_Gen a ex:GPUArchitecture ;
     schema:name "SiS 1st Gen"@en .
 
 ex:VIA a schema:Organization ;
+    owl:sameAs <https://www.wikidata.org/entity/Q633839> ;
     schema:name "VIA"@en .
 
 ex:mem_size_11_GB a ex:MemorySize .
@@ -46477,6 +46478,7 @@ ex:Intel_Gen_7_0 a ex:GPUArchitecture ;
     schema:name "Intel Gen 7.0"@en .
 
 ex:S3 a schema:Organization ;
+    owl:sameAs <https://www.wikidata.org/entity/Q632336> ;
     schema:name "S3"@en .
 
 ex:mem_size_20_GB a ex:MemorySize .
@@ -46543,6 +46545,7 @@ ex:mem_size_80_GB a ex:MemorySize .
 ex:mem_size_96_GB a ex:MemorySize .
 
 ex:SiS a schema:Organization ;
+    owl:sameAs <https://www.wikidata.org/entity/Q376193> ;
     schema:name "SiS"@en .
 
 ex:mem_size_10_GB a ex:MemorySize .
@@ -46572,6 +46575,7 @@ ex:XG4 a ex:GPUArchitecture ;
     schema:name "XG4"@en .
 
 ex:XGI a schema:Organization ;
+    owl:sameAs <https://www.wikidata.org/entity/Q550011> ;
     schema:name "XGI"@en .
 
 ex:mem_size_48_GB a ex:MemorySize .
