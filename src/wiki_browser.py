@@ -5,109 +5,96 @@ from rdflib import Graph, URIRef
 def show_wiki(g, EX, SCHEMA):
     st.subheader("GPU Encyclopedia")
 
-    # --- 1. UI for filtering ---
-    st.write("### Filter settings")
-    col_f1, col_f2, col_f3 = st.columns(3)
-    
-    with col_f1:
-        filter_type = st.selectbox("Filter by:", ["All", "Brand", "Architecture", "Release Year"])
-    
-    # Dynamically show filter value input based on selected filter type
-    with col_f2:
-        filter_value = None
+    # --- 1. UI outside form ---
+    filter_type = st.selectbox("Filter by:", ["All", "Brand", "Architecture", "Release Year"])
+
+    # --- 2. Form ---
+    with st.form("wiki_filter_form"):
+        col_f1, col_f2 = st.columns(2)
+        
+        with col_f1:
+            filter_value = None
+            if filter_type == "Brand":
+                q_brands = "SELECT DISTINCT ?name WHERE { ?b a <https://schema.org/Organization> ; <https://schema.org/name> ?name . }"
+                brands = [str(r.name) for r in g.query(q_brands)]
+                filter_value = st.selectbox("Select brand:", sorted(brands))
+            elif filter_type == "Architecture":
+                q_archs = "SELECT DISTINCT ?name WHERE { ?a a <http://example.org/gpu/GPUArchitecture> ; <https://schema.org/name> ?name . }"
+                archs = [str(r.name) for r in g.query(q_archs)]
+                filter_value = st.selectbox("Select architecture:", sorted(archs))
+            elif filter_type == "Release Year":
+                filter_value = st.slider("Minimum year:", 1995, 2025, 2010)
+            else:
+                st.write("No additional settings needed.")
+
+        with col_f2:
+            rank_by = st.selectbox("Ranking criteria:", 
+                                   ["Performance (GFLOPS)", "TDP (W)", "Price ($)", "Number of cores"])
+
+        # submit button
+        submitted = st.form_submit_button("Show results")
+
+    # --- 3. Logic and display (executes only after submission) ---
+    if submitted:
+        rank_map = {
+            "Performance (GFLOPS)": "ex:fp32GFlops",
+            "TDP (W)": "ex:tdpWatts",
+            "Price ($)": "schema:price",
+            "Number of cores": "ex:shadingUnits"
+        }
+        target_predicate = rank_map[rank_by]
+
+        # Build filter clause
+        filter_clause = ""
         if filter_type == "Brand":
-            q_brands = "SELECT DISTINCT ?name WHERE { ?b a <https://schema.org/Organization> ; <https://schema.org/name> ?name . }"
-            brands = [str(r.name) for r in g.query(q_brands)]
-            filter_value = st.selectbox("Select brand:", sorted(brands))
+            filter_clause = f'?brand_uri <https://schema.org/name> ?bn . FILTER(STR(?bn) = "{filter_value}")'
         elif filter_type == "Architecture":
-            q_archs = "SELECT DISTINCT ?name WHERE { ?a a <http://example.org/gpu/GPUArchitecture> ; <https://schema.org/name> ?name . }"
-            archs = [str(r.name) for r in g.query(q_archs)]
-            filter_value = st.selectbox("Select architecture:", sorted(archs))
+            filter_clause = f'?arch_uri <https://schema.org/name> ?an . FILTER(STR(?an) = "{filter_value}")'
         elif filter_type == "Release Year":
-            filter_value = st.slider("Minimum year:", 1995, 2025, 2010)
+            filter_clause = f'FILTER(?year >= {filter_value})'
 
-    with col_f3:
-        rank_by = st.selectbox("Ranking criteria:", 
-                               ["Performance (GFLOPS)", "TDP (W)", "Price ($)", "Number of cores"])
-        
-    # --- 2. Dynamic query building ---
-    # Map ranking criteria to predicates
-    rank_map = {
-        "Performance (GFLOPS)": "ex:fp32GFlops",
-        "TDP (W)": "ex:tdpWatts",
-        "Price ($)": "schema:price",
-        "Number of cores": "ex:shadingUnits"
-    }
-    target_predicate = rank_map[rank_by]
+        main_query = f"""
+        PREFIX ex: <http://example.org/gpu/>
+        PREFIX schema: <https://schema.org/>
+        SELECT DISTINCT ?gpu ?name ?val ?year WHERE {{
+            ?gpu a schema:Product ;
+                 schema:name ?name ;
+                 {target_predicate} ?val .
+            OPTIONAL {{ ?gpu schema:manufacturer ?brand_uri }}
+            OPTIONAL {{ ?gpu ex:hasArchitecture ?arch_uri }}
+            OPTIONAL {{ ?gpu ex:releaseYear ?year }}
+            {filter_clause}
+        }} ORDER BY ?val
+        """
 
-    # Build filter clause
-    filter_clause = ""
-    if filter_type == "Brand":
-        # Použijeme pomocnou proměnnou ?bname a funkci STR() pro porovnání
-        filter_clause = f'?brand_uri <https://schema.org/name> ?bname . FILTER(STR(?bname) = "{filter_value}")'
-    elif filter_type == "Architecture":
-        # Totéž pro architekturu
-        filter_clause = f'?arch_uri <https://schema.org/name> ?aname . FILTER(STR(?aname) = "{filter_value}")'
-    elif filter_type == "Release Year":
-        filter_clause = f'FILTER(?year >= {filter_value})'
+        @st.cache_data(hash_funcs={Graph: id})
+        def run_dynamic_query(query_str):
+            res = g.query(query_str)
+            return [
+                {
+                    "Name": str(r.name), 
+                    "Value": float(r.val.toPython()) if hasattr(r.val, 'toPython') else float(r.val), 
+                    "Year": int(r.year.toPython()) if r.year and hasattr(r.year, 'toPython') else (int(r.year) if r.year else None)
+                } for r in res
+            ]
 
-    # Final query
-    main_query = f"""
-    PREFIX ex: <http://example.org/gpu/>
-    PREFIX schema: <https://schema.org/>
-    SELECT DISTINCT ?gpu ?name ?val ?year WHERE {{
-        ?gpu a schema:Product ;
-             schema:name ?name ;
-             {target_predicate} ?val .
-        
-        # Volitelné vazby pro filtry
-        OPTIONAL {{ ?gpu schema:manufacturer ?brand_uri }}
-        OPTIONAL {{ ?gpu ex:hasArchitecture ?arch_uri }}
-        OPTIONAL {{ ?gpu ex:releaseYear ?year }}
-        
-        {filter_clause}
-    }} ORDER BY ?val
-    """
+        results_list = run_dynamic_query(main_query)
+        df = pd.DataFrame(results_list)
 
-    # --- 3. Query execution ---
-    @st.cache_data(hash_funcs={Graph: id})
-    def run_dynamic_query(query_str):
-        res = g.query(query_str)
-        # Přidáme .toPython() pro jistotu u číselných hodnot
-        return [
-            {
-                "Name": str(r.name), 
-                "Value": float(r.val.toPython()) if hasattr(r.val, 'toPython') else float(r.val), 
-                "Year": int(r.year.toPython()) if r.year and hasattr(r.year, 'toPython') else (int(r.year) if r.year else None)
-            } for r in res
-        ]
+        if not df.empty:
+            st.success(f"{len(df)} GPUs found.")
+            
+            # Stats
+            cols = st.columns(3)
+            worst, median, best = df.iloc[0], df.iloc[len(df)//2], df.iloc[-1]
 
-    results_list = run_dynamic_query(main_query)
-    df = pd.DataFrame(results_list)
+            cols[0].metric(label="🏆 The Best", value=best['Name'])
+            cols[0].caption(f"{best['Value']} {rank_by.split()[-1]}")
+            cols[1].metric(label="⚖️ Median", value=median['Name'])
+            cols[1].caption(f"{median['Value']} {rank_by.split()[-1]}")
+            cols[2].metric(label="📉 The Worst", value=worst['Name'])
+            cols[2].caption(f"{worst['Value']} {rank_by.split()[-1]}")
 
-    # --- 4. Displaying Results ---
-    if not df.empty:
-        st.info(f"{len(df)} GPUs found matching the criteria.")
-        
-        # Statistiky
-        st.write(f"### Statistics: {rank_by}")
-        cols = st.columns(3)
-        
-        worst = df.iloc[0]
-        median = df.iloc[len(df)//2]
-        best = df.iloc[-1]
-
-        cols[0].metric(label="Best", value=best['Name'])
-        cols[0].caption(f"{best['Value']} {rank_by.split()[-1]}")
-        
-        cols[1].metric(label="Median", value=median['Name'])
-        cols[1].caption(f"{median['Value']} {rank_by.split()[-1]}")
-        
-        cols[2].metric(label="Worst", value=worst['Name'])
-        cols[2].caption(f"{worst['Value']} {rank_by.split()[-1]}")
-
-        st.write("### Results:")
-        st.dataframe(df.rename(columns={"Value": rank_by}), use_container_width=True)
-    else:
-        st.warning("For this combination of filters and criteria, no results were found in the graph.")
-        st.code(main_query, language="sparql") # Show the query so we can see what failed
+            st.dataframe(df.rename(columns={"Value": rank_by}), use_container_width=True)
+        else:
+            st.warning("No results found.")
