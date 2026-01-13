@@ -1,3 +1,6 @@
+Project focused on transforming structured data into RDF and exploring it through an interactive web interface with basic querying capabilities.
+
+
 * **THE APP:** (https://gpu-info.streamlit.app/)
 
 ## Data sources:
