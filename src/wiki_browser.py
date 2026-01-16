@@ -5,6 +5,10 @@ from rdflib import Graph, URIRef
 def show_wiki(g, EX, SCHEMA):
     st.subheader("GPU Encyclopedia")
 
+    if "rank_by_key" not in st.session_state:
+        st.session_state.rank_by_key = "None"
+
+
     # --- 1. UI outside form ---
     st.write("### Filter settings")
     filter_type = st.selectbox("Filter by:", 
@@ -61,8 +65,9 @@ def show_wiki(g, EX, SCHEMA):
 
 
         with col_f2:
-            rank_options = ["None", "Performance (GFLOPS)", "TDP (W)", "Price ($)", "Number of cores"]
-            rank_by = st.selectbox("Ranking criteria:", rank_options)
+            rank_by = st.selectbox("Ranking criteria:", 
+                                   ["None", "Performance (GFLOPS)", "TDP (W)", "Price ($)", "Number of cores"],
+                                   key="rank_by_key")
 
         # submit button
         submitted = st.form_submit_button("Show results")
@@ -154,3 +159,10 @@ def show_wiki(g, EX, SCHEMA):
                 display_df = display_df.drop(columns=["Value"])
             
             st.dataframe(display_df, use_container_width=True)
+        else:
+            st.warning("No results found.")
+            if is_ranking:
+                st.info(f"The criteria '{rank_by}' might be missing for these cards (common for older GPUs).")
+                if st.button("Remove ranking criteria (set to None)"):
+                    st.session_state.rank_by_key = "None"
+                    st.rerun()
