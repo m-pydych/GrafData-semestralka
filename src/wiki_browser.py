@@ -4,6 +4,8 @@ from rdflib import Graph, URIRef
 
 def show_wiki(g, EX, SCHEMA):
     st.subheader("GPU Encyclopedia")
+    def reset_ranking_callback():
+            st.session_state.rank_by_key = "None"
 
     if "rank_by_key" not in st.session_state:
         st.session_state.rank_by_key = "None"
@@ -162,9 +164,7 @@ def show_wiki(g, EX, SCHEMA):
         else:
             if is_ranking:
                 st.info(f"No results found. The Criteria '{rank_by}' might be missing for these cards. Removing it might show something.")
-                if st.button("Remove ranking criteria (set to None)"):
-                    st.session_state.rank_by_key = "None"
-                    submitted = True
-                    st.rerun()
+
+                st.button("Remove ranking criteria (set to None)", on_click=reset_ranking_callback)
             else:
                 st.warning("No results found.")
