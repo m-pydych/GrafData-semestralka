@@ -4,11 +4,16 @@ from rdflib import Graph, URIRef
 
 def show_wiki(g, EX, SCHEMA):
     st.subheader("GPU Encyclopedia")
-    def reset_ranking_callback():
-            st.session_state.rank_by_key = "None"
 
     if "rank_by_key" not in st.session_state:
         st.session_state.rank_by_key = "None"
+    if "run_search" not in st.session_state:
+        st.session_state.run_search = False
+    
+    def reset_and_search_callback():
+        st.session_state.rank_by_key = "None"
+        st.session_state.run_search = True
+
 
 
     # --- 1. UI outside form ---
@@ -76,6 +81,7 @@ def show_wiki(g, EX, SCHEMA):
 
     # --- 3. Logic and display (executes only after submission) ---
     if submitted:
+        st.session_state.run_search = False
         rank_map = {
             "Performance (GFLOPS)": "ex:fp32GFlops",
             "TDP (W)": "ex:tdpWatts",
@@ -165,6 +171,6 @@ def show_wiki(g, EX, SCHEMA):
             if is_ranking:
                 st.info(f"No results found. The Criteria '{rank_by}' might be missing for these cards. Removing it might show something.")
 
-                st.button("Remove ranking criteria (set to None)", on_click=reset_ranking_callback)
+                st.button("Remove ranking criteria & search again", on_click=reset_and_search_callback)
             else:
                 st.warning("No results found.")
