@@ -61,8 +61,8 @@ def show_wiki(g, EX, SCHEMA):
 
 
         with col_f2:
-            rank_by = st.selectbox("Ranking criteria:", 
-                                   ["Performance (GFLOPS)", "TDP (W)", "Price ($)", "Number of cores"])
+            rank_options = ["None", "Performance (GFLOPS)", "TDP (W)", "Price ($)", "Number of cores"]
+            rank_by = st.selectbox("Ranking criteria:", rank_options)
 
         # submit button
         submitted = st.form_submit_button("Show results")
@@ -75,7 +75,8 @@ def show_wiki(g, EX, SCHEMA):
             "Price ($)": "schema:price",
             "Number of cores": "ex:shadingUnits"
         }
-        target_predicate = rank_map[rank_by]
+        is_ranking = rank_by != "None"
+        target_predicate = rank_map[rank_by] if is_ranking else "schema:name"
 
         # Build filter clause
         filter_clause = ""
@@ -99,6 +100,7 @@ def show_wiki(g, EX, SCHEMA):
             ?gpu a schema:Product ;
                  schema:name ?name ;
                  {target_predicate} ?val .
+            
             OPTIONAL {{ ?gpu schema:manufacturer ?brand_uri }}
             OPTIONAL {{ ?gpu ex:hasArchitecture ?arch_uri }}
             OPTIONAL {{ ?gpu ex:releaseYear ?year }}
@@ -107,17 +109,22 @@ def show_wiki(g, EX, SCHEMA):
         """
 
         @st.cache_data(hash_funcs={Graph: id})
-        def run_dynamic_query(query_str):
+        def run_dynamic_query(query_str, ranking_active):
             res = g.query(query_str)
-            return [
-                {
-                    "Name": str(r.name), 
-                    "Value": float(r.val.toPython()) if hasattr(r.val, 'toPython') else float(r.val), 
+            data = []
+            for r in res:
+                row = {
+                    "Name": str(r.name),
                     "Year": int(r.year.toPython()) if r.year and hasattr(r.year, 'toPython') else (int(r.year) if r.year else None)
-                } for r in res
-            ]
+                }
+                if ranking_active:
+                    row["Value"] = float(r.val.toPython()) if hasattr(r.val, 'toPython') else float(r.val)
+                else:
+                    row["Value"] = str(r.val)
+                data.append(row)
+            return data
 
-        results_list = run_dynamic_query(main_query)
+        results_list = run_dynamic_query(main_query, is_ranking)
         df = pd.DataFrame(results_list)
 
 
@@ -125,14 +132,25 @@ def show_wiki(g, EX, SCHEMA):
 
         if not df.empty:
             st.success(f"{len(df)} GPUs found.")
-            cols = st.columns(3)
-            worst, median, best = df.iloc[0], df.iloc[len(df)//2], df.iloc[-1]
-            cols[0].metric(label="Highest", value=best['Name'])
-            cols[0].caption(f"{best['Value']} {rank_by.split()[-1]}")
-            cols[1].metric(label="Median", value=median['Name'])
-            cols[1].caption(f"{median['Value']} {rank_by.split()[-1]}")
-            cols[2].metric(label="Lowest", value=worst['Name'])
-            cols[2].caption(f"{worst['Value']} {rank_by.split()[-1]}")
-            st.dataframe(df.rename(columns={"Value": rank_by}), use_container_width=True)
-        else:
-            st.warning("No results found.")
+
+            if is_ranking:
+                st.write(f"### Statistics: {rank_by}")
+                cols = st.columns(3)
+                worst, median, best = df.iloc[0], df.iloc[len(df)//2], df.iloc[-1]
+
+                cols = st.columns(3)
+                worst, median, best = df.iloc[0], df.iloc[len(df)//2], df.iloc[-1]
+                cols[0].metric(label="Highest", value=best['Name'])
+                cols[0].caption(f"{best['Value']} {rank_by.split()[-1]}")
+                cols[1].metric(label="Median", value=median['Name'])
+                cols[1].caption(f"{median['Value']} {rank_by.split()[-1]}")
+                cols[2].metric(label="Lowest", value=worst['Name'])
+                cols[2].caption(f"{worst['Value']} {rank_by.split()[-1]}")
+            
+            display_df = df.copy()
+            if is_ranking:
+                display_df = display_df.rename(columns={"Value": rank_by})
+            else:
+                display_df = display_df.drop(columns=["Value"])
+            
+            st.dataframe(display_df, use_container_width=True)
