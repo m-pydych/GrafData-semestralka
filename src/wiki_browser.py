@@ -29,18 +29,33 @@ def show_wiki(g, EX, SCHEMA):
                 q_years = "SELECT DISTINCT ?year WHERE { ?gpu <http://example.org/gpu/releaseYear> ?year . }"
                 years = [str(r.year) for r in g.query(q_years)]
                 filter_value = st.selectbox("Select year:", sorted(years))
+
             elif filter_type == "Memory Size":
-                q_m_sizes = "SELECT DISTINCT ?name WHERE { ?gpu <http://example.org/gpu/memorySize> ?ms . ?ms <https://schema.org/name> ?name . }"
-                m_sizes = [str(r.name) for r in g.query(q_m_sizes)]
-                filter_value = st.selectbox("Select VRAM:", sorted(m_sizes))
+                q_m_sizes = """
+                SELECT DISTINCT ?label WHERE { 
+                    ?gpu <http://example.org/gpu/memorySize> ?ms . 
+                    OPTIONAL { ?ms <https://schema.org/name> ?name }
+                    BIND(COALESCE(STR(?name), STR(?ms)) AS ?label)
+                }"""
+                m_sizes = [str(r.label).split('/')[-1].split('#')[-1] for r in g.query(q_m_sizes)]
+                filter_value = st.selectbox("Select VRAM:", sorted(list(set(m_sizes))))
+
             elif filter_type == "Memory Type":
                 q_m_types = "SELECT DISTINCT ?type WHERE { ?gpu <http://example.org/gpu/memoryType> ?type . }"
                 m_types = [str(r.type) for r in g.query(q_m_types)]
                 filter_value = st.selectbox("Select memory type:", sorted(m_types))
+
             elif filter_type == "Memory Bus":
-                q_m_buses = "SELECT DISTINCT ?name WHERE { ?gpu <http://example.org/gpu/memBus> ?mb . ?mb <https://schema.org/name> ?name . }"
-                m_buses = [str(r.name) for r in g.query(q_m_buses)]
-                filter_value = st.selectbox("Select bus width:", sorted(m_buses))
+                # Oprava: Hledáme, co mají karty v ex:memBus
+                q_m_buses = """
+                SELECT DISTINCT ?label WHERE { 
+                    ?gpu <http://example.org/gpu/memBus> ?mb . 
+                    OPTIONAL { ?mb <https://schema.org/name> ?name }
+                    BIND(COALESCE(STR(?name), STR(?mb)) AS ?label)
+                }"""
+                m_buses = [str(r.label).split('/')[-1].split('#')[-1] for r in g.query(q_m_buses)]
+                filter_value = st.selectbox("Select bus width:", sorted(list(set(m_buses))))
+
             else:
                 st.write("No additional settings needed.")
 
@@ -69,14 +84,13 @@ def show_wiki(g, EX, SCHEMA):
         elif filter_type == "Architecture":
             filter_clause = f'?arch_uri <https://schema.org/name> ?an . FILTER(STR(?an) = "{filter_value}")'
         elif filter_type == "Release Year":
-            # Roky v datech jsou čísla, v uvozovkách by to nic nenašlo
             filter_clause = f'FILTER(?year = {filter_value})'
         elif filter_type == "Memory Size":
-            filter_clause = f'?gpu <http://example.org/gpu/memorySize> ?ms . ?ms <https://schema.org/name> ?msn . FILTER(STR(?msn) = "{filter_value}")'
+            filter_clause = f'?gpu <http://example.org/gpu/memorySize> ?ms . FILTER(CONTAINS(STR(?ms), "{filter_value}"))'
         elif filter_type == "Memory Type":
             filter_clause = f'?gpu <http://example.org/gpu/memoryType> ?mt . FILTER(STR(?mt) = "{filter_value}")'
         elif filter_type == "Memory Bus":
-            filter_clause = f'?gpu <http://example.org/gpu/memBus> ?mb . ?mb <https://schema.org/name> ?mbn . FILTER(STR(?mbn) = "{filter_value}")'
+            filter_clause = f'?gpu <http://example.org/gpu/memBus> ?mb . FILTER(CONTAINS(STR(?mb), "{filter_value}"))'
 
         main_query = f"""
         PREFIX ex: <http://example.org/gpu/>
