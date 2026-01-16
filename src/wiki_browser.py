@@ -160,9 +160,10 @@ def show_wiki(g, EX, SCHEMA):
             
             st.dataframe(display_df, use_container_width=True)
         else:
-            st.warning("No results found.")
             if is_ranking:
-                st.info(f"The criteria '{rank_by}' might be missing for these cards (common for older GPUs).")
+                st.info(f"No results found. The Criteria '{rank_by}' might be missing for these cards. Removing it might show something.")
                 if st.button("Remove ranking criteria (set to None)"):
                     st.session_state.rank_by_key = "None"
                     st.rerun()
+            else:
+                st.warning("No results found.")
