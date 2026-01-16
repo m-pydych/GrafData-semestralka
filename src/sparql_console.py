@@ -8,11 +8,9 @@ def show_console(g):
 
     # Predefined query templates
     templates = {
-        "All GPUs made by NVIDIA": "SELECT ?gpu ?name WHERE {\n  ?gpu <https://schema.org/manufacturer> <http://example.org/gpu/NVIDIA> ;\n       <https://schema.org/name> ?name .\n} LIMIT 10",
+        "All GPUs made by NVIDIA": "SELECT ?gpu ?name ?year WHERE {\n?gpu <https://schema.org/manufacturer> <http://example.org/gpu/NVIDIA> ;\n<https://schema.org/name> ?name ;\n<http://example.org/gpu/releaseYear> ?year.}",
         "Top 10 GPUs by TDP": "SELECT ?name ?tdp WHERE {\n  ?gpu <http://example.org/gpu/tdpWatts> ?tdp ;\n       <https://schema.org/name> ?name .\n} ORDER BY DESC(?tdp) LIMIT 10",
         "Count of GPUs by year": "SELECT ?year (COUNT(?gpu) AS ?count) WHERE {\n  ?gpu <http://example.org/gpu/releaseYear> ?year .\n} GROUP BY ?year ORDER BY ?year",
-
-
     }
 
     selected_template = st.selectbox("sample query:", list(templates.keys()))
