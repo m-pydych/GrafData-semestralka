@@ -80,7 +80,7 @@ def show_wiki(g, EX, SCHEMA):
         submitted = st.form_submit_button("Show results")
 
     # --- 3. Logic and display (executes only after submission) ---
-    if submitted:
+    if submitted or st.session_state.get("run_search", False):
         st.session_state.run_search = False
         rank_map = {
             "Performance (GFLOPS)": "ex:fp32GFlops",
@@ -148,9 +148,6 @@ def show_wiki(g, EX, SCHEMA):
 
             if is_ranking:
                 st.write(f"### Statistics: {rank_by}")
-                cols = st.columns(3)
-                worst, median, best = df.iloc[0], df.iloc[len(df)//2], df.iloc[-1]
-
                 cols = st.columns(3)
                 worst, median, best = df.iloc[0], df.iloc[len(df)//2], df.iloc[-1]
                 cols[0].metric(label="Highest", value=best['Name'])
